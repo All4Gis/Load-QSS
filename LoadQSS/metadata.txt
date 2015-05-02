@@ -12,7 +12,7 @@
 name=Load QSS
 qgisMinimumVersion=2.2
 description=Configure look and feel for Qgis
-version=1.2.1
+version=1.2.2
 author=Francisco Raga Lopez
 email=franka1986@gmail.com
 
@@ -26,10 +26,11 @@ email=franka1986@gmail.com
 # tags are comma separated with spaces allowed
 tags=productivity,qss,look and feel,style,work flow, configuration
 
-homepage= 
-tracker= 
-repository= 
+homepage=http://hub.qgis.org/projects/LoadQSS
+tracker=http://hub.qgis.org/projects/loadqss/issues
+repository=https://github.com/All4Gis/Load-QSS
 icon=icon.png
+
 # experimental flag
 experimental=True
 

@@ -30,14 +30,21 @@ try:
 except:
     None; 
 
+#Set style list
 def setStyleList(StyleList):
+    
     s = QSettings()
     s.setValue('myStyles/StyleList', pickle.dumps(StyleList))
- 
-# GetStyle
-def getConfig(Name):    
+
+# def setActivated(Name):
+#     s = QSettings()
+#     s.remove('myStyles/Activated')
+#     s.setValue('myStyles/Activated', pickle.dumps(Name))
+    
+# GetStyle row
+def getStyle(Name):    
     s = QSettings()
-    StyleList = getConfigList()
+    StyleList = getStyleList()
     if Name in StyleList:
         name = s.value('myStyles/%s/name'%Name)
         path = s.value('myStyles/%s/path'%Name)
@@ -46,8 +53,8 @@ def getConfig(Name):
         path = []
     return(name,path)
 
-#Get myStyles 
-def getConfigList():
+#Get myStyles list
+def getStyleList():
     s = QSettings()
     try:
         StyleList = pickle.loads(s.value('myStyles/StyleList'))
@@ -55,9 +62,19 @@ def getConfigList():
         StyleList = []
     return(StyleList)
 
+#Get Activated
+# def getActivated():
+#     
+#     s = QSettings()
+#     try:
+#         Activated = pickle.loads(s.value('myStyles/Activated'))
+#     except:
+#         Activated = []
+#     return(Activated)
+
 #Create or update 
 def setStyle(Name, path):
-    StyleList = getConfigList()
+    StyleList = getStyleList()
     nStyleList = list(set([Name]+StyleList))
     setStyleList(nStyleList)
     s = QSettings()
@@ -65,21 +82,31 @@ def setStyle(Name, path):
     s.setValue('myStyles/%s/path'%Name, path)
 
 # Delete Style
-def delConfig(Name):
+def delStyle(Name):
     s = QSettings()
-    StyleList = getConfigList()
+    StyleList = getStyleList()
     if Name in StyleList:
         StyleList.remove(Name)
         setStyleList(StyleList)
         s.remove('myStyles/%s/name'%Name)
- 
+        s.remove('myStyles/%s/path'%Name)
+        
 #Activate a specified style
-def activateConfig(Name):
-    name, path = getConfig(Name)
+def activateStyle(Name):
+    
+    name, path = getStyle(Name)
     app = QApplication.instance() 
-    app.setStyleSheet("") 
     f = QFile(path)
-    f.open(QFile.ReadOnly | QFile.Text)
-    ts = QTextStream(f)
-    stylesheet = ts.readAll()
-    app.setStyleSheet( stylesheet ) 
+    
+    if not f.exists():
+        QgsMessageLog.logMessage("No se ha podido cargar el estilo correctamente.", level=QgsMessageLog.INFO); 
+        app.setStyleSheet( "" ) 
+    
+    else:
+        f.open(QFile.ReadOnly | QFile.Text)
+        ts = QTextStream(f)
+        stylesheet = ts.readAll()
+        app.setStyleSheet( stylesheet ) 
+        
+        #setActivated(name)
+       

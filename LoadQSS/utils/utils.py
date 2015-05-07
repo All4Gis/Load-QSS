@@ -23,6 +23,7 @@ from PyQt4.QtCore import *
 from PyQt4.QtGui import *
 from qgis.core import *
 import pickle
+from qgis.gui import QgsMessageBar
 
 try:
     import sys
@@ -36,10 +37,10 @@ def setStyleList(StyleList):
     s = QSettings()
     s.setValue('myStyles/StyleList', pickle.dumps(StyleList))
 
-# def setActivated(Name):
-#     s = QSettings()
-#     s.remove('myStyles/Activated')
-#     s.setValue('myStyles/Activated', pickle.dumps(Name))
+def setActivated(Name):
+    s = QSettings()
+    s.remove('myStyles/Activated')
+    s.setValue('myStyles/Activated', pickle.dumps(Name))
     
 # GetStyle row
 def getStyle(Name):    
@@ -63,14 +64,14 @@ def getStyleList():
     return(StyleList)
 
 #Get Activated
-# def getActivated():
-#     
-#     s = QSettings()
-#     try:
-#         Activated = pickle.loads(s.value('myStyles/Activated'))
-#     except:
-#         Activated = []
-#     return(Activated)
+def getActivated():
+     
+    s = QSettings()
+    try:
+        Activated = pickle.loads(s.value('myStyles/Activated'))
+    except:
+        Activated = []
+    return(Activated)
 
 #Create or update 
 def setStyle(Name, path):
@@ -92,14 +93,16 @@ def delStyle(Name):
         s.remove('myStyles/%s/path'%Name)
         
 #Activate a specified style
-def activateStyle(Name):
-    
+def activateStyle(Name,iface):
+ 
     name, path = getStyle(Name)
     app = QApplication.instance() 
-    f = QFile(path)
-    
+    try:
+        f = QFile(path)
+    except:
+        raise
     if not f.exists():
-        QgsMessageLog.logMessage("No se ha podido cargar el estilo correctamente.", level=QgsMessageLog.INFO); 
+        iface.messageBar().pushMessage("Error: ", "The path to the * .qss not exist.load default style ", level=QgsMessageBar.CRITICAL, duration=3) 
         app.setStyleSheet( "" ) 
     
     else:
@@ -107,6 +110,7 @@ def activateStyle(Name):
         ts = QTextStream(f)
         stylesheet = ts.readAll()
         app.setStyleSheet( stylesheet ) 
-        
-        #setActivated(name)
+        iface.messageBar().pushMessage("Info: ", "Style loaded correctly.", level=QgsMessageBar.INFO, duration=3 ) 
+ 
+        setActivated(name)
        

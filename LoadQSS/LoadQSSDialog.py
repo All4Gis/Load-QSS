@@ -46,9 +46,6 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
         setStyle("Dark Style", self.plugin_dir + "\\examples\\Dark\\Dark.qss")
         setStyle("Machinery Style",  self.plugin_dir + "\\examples\\machinery\\qmc2-machinery-0.3.qss")
  
-        #Activated=getActivated()
-        #activateStyle(str(Activated))
-        
         self.listStyles.addItems(getStyleList())
         self.currentItem = None
         
@@ -87,10 +84,11 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
     
     #Apply style
     def  ApplyStyle(self):
-        activateStyle(self.currentItem.text() )
+        activateStyle(self.currentItem.text(),self.iface)
         return
     
     #Restores style 
     def ResetStyle(self):
         self.app.setStyleSheet("") 
+        setActivated("")
         return

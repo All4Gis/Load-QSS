@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui.resources\Load_QSS_dialog_base.ui'
 #
-# Created: Tue Apr 28 16:33:18 2015
-#      by: PyQt4 UI code generator 4.8.3
+# Created: Thu May 07 21:36:46 2015
+#      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -12,7 +12,16 @@ from PyQt4 import QtCore, QtGui
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
 except AttributeError:
-    _fromUtf8 = lambda s: s
+    def _fromUtf8(s):
+        return s
+
+try:
+    _encoding = QtGui.QApplication.UnicodeUTF8
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig, _encoding)
+except AttributeError:
+    def _translate(context, text, disambig):
+        return QtGui.QApplication.translate(context, text, disambig)
 
 class Ui_LoadQSSDialog(object):
     def setupUi(self, LoadQSSDialog):
@@ -31,17 +40,17 @@ class Ui_LoadQSSDialog(object):
         self.verticalLayout.setObjectName(_fromUtf8("verticalLayout"))
         self.Add_btn = QtGui.QPushButton(LoadQSSDialog)
         self.Add_btn.setEnabled(True)
-        self.Add_btn.setCursor(QtCore.Qt.PointingHandCursor)
+        self.Add_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.Add_btn.setObjectName(_fromUtf8("Add_btn"))
         self.verticalLayout.addWidget(self.Add_btn)
         self.Delete_btn = QtGui.QPushButton(LoadQSSDialog)
         self.Delete_btn.setEnabled(False)
-        self.Delete_btn.setCursor(QtCore.Qt.PointingHandCursor)
+        self.Delete_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.Delete_btn.setObjectName(_fromUtf8("Delete_btn"))
         self.verticalLayout.addWidget(self.Delete_btn)
         self.Activate_btn = QtGui.QPushButton(LoadQSSDialog)
         self.Activate_btn.setEnabled(False)
-        self.Activate_btn.setCursor(QtCore.Qt.PointingHandCursor)
+        self.Activate_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.Activate_btn.setObjectName(_fromUtf8("Activate_btn"))
         self.verticalLayout.addWidget(self.Activate_btn)
         self.Default_btn = QtGui.QPushButton(LoadQSSDialog)
@@ -60,10 +69,10 @@ class Ui_LoadQSSDialog(object):
         QtCore.QMetaObject.connectSlotsByName(LoadQSSDialog)
 
     def retranslateUi(self, LoadQSSDialog):
-        LoadQSSDialog.setWindowTitle(QtGui.QApplication.translate("LoadQSSDialog", "Load QSS", None, QtGui.QApplication.UnicodeUTF8))
-        self.Add_btn.setText(QtGui.QApplication.translate("LoadQSSDialog", "Add", None, QtGui.QApplication.UnicodeUTF8))
-        self.Delete_btn.setText(QtGui.QApplication.translate("LoadQSSDialog", "Delete", None, QtGui.QApplication.UnicodeUTF8))
-        self.Activate_btn.setText(QtGui.QApplication.translate("LoadQSSDialog", "Activate", None, QtGui.QApplication.UnicodeUTF8))
-        self.Default_btn.setText(QtGui.QApplication.translate("LoadQSSDialog", "Default", None, QtGui.QApplication.UnicodeUTF8))
+        LoadQSSDialog.setWindowTitle(_translate("LoadQSSDialog", "Load QSS", None))
+        self.Add_btn.setText(_translate("LoadQSSDialog", "Add", None))
+        self.Delete_btn.setText(_translate("LoadQSSDialog", "Delete", None))
+        self.Activate_btn.setText(_translate("LoadQSSDialog", "Activate", None))
+        self.Default_btn.setText(_translate("LoadQSSDialog", "Default", None))
 
 import resources_rc

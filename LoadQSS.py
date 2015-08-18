@@ -21,12 +21,13 @@
 """
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+import os.path
 from qgis.core import *
-from utils.utils import *
-import gui.generated.resources_rc
+
 from AboutQSSDialog import AboutQSSDialog
 from LoadQSSDialog import LoadQSSDialog
-import os.path
+import gui.generated.resources_rc
+from utils.utils import *
 
 
 class LoadQSS:
@@ -43,38 +44,38 @@ class LoadQSS:
 
             if qVersion() > '4.3.3':
                 QCoreApplication.installTranslator(self.translator)
+                
+        # Activate last style
+        try:
+            activateStyle(str(getActivated()), self.iface)
+        except:
+            None
 
     def initGui(self):
-        self.action = QAction(QIcon(":/images/images/icon.png"),u"Load QSS", self.iface.mainWindow())
+        self.action = QAction(QIcon(":/imgQss/images/icon.png"), u"Load QSS", self.iface.mainWindow())
         self.action.triggered.connect(self.run)
         self.iface.addToolBarIcon(self.action)
         self.iface.addPluginToMenu(u"&Load QSS", self.action)
        
-        self.actionAbout = QAction(QIcon(":/images/images/info.png"),u"About", self.iface.mainWindow())
+        self.actionAbout = QAction(QIcon(":/imgQss/images/info.png"), u"About", self.iface.mainWindow())
         self.iface.addPluginToMenu(u"&Load QSS", self.actionAbout)
         self.actionAbout.triggered.connect(self.About)
-        #Activate last style
-        try:
-            activateStyle(str(getActivated()),self.iface)
-        except:
-            None
+
 
     def unload(self):
         self.iface.removePluginMenu(u"&Load QSS", self.action)
-        self.iface.removePluginMenu(u"&Load QSS",self.actionAbout)
+        self.iface.removePluginMenu(u"&Load QSS", self.actionAbout)
         self.iface.removeToolBarIcon(self.action)
 
     def About(self):
         self.About = AboutQSSDialog(self.iface)
-        self.About.show()
-        self.About.setWindowFlags( Qt.WindowSystemMenuHint | Qt.WindowTitleHint) 
-        result = self.About.exec_()
+        self.About.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint) 
+        self.About.exec_()
         return
     
     def run(self):
         self.dlg = LoadQSSDialog(self.iface)
-        self.dlg.show()
-        self.dlg.setWindowFlags( Qt.WindowSystemMenuHint | Qt.WindowTitleHint) 
-        result = self.dlg.exec_()
+        self.dlg.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint) 
+        self.dlg.exec_()
         
         

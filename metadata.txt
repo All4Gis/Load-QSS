@@ -12,7 +12,8 @@
 name=Load QSS
 qgisMinimumVersion=2.2
 description=Configure look and feel for Qgis.
-version=1.3.1
+about=Load QSS allows the user to load his/her own *.qss files and change the look and feel of Qgis.Some examples o predefined themes are provided.
+version=1.3.2
 author=Francisco Raga Lopez
 email=franka1986@gmail.com
 
@@ -21,15 +22,28 @@ email=franka1986@gmail.com
 # Optional items:
 
 # Uncomment the following line and add your changelog entries:
-# changelog=
+changelog=    
+	** General **
+	1.3.2:
+		- Add new examples.
+		- Minor changes.
+	1.3.1:
+		- Add about info.
+		- Restore last style activated.
+	1.3 :
+	 	- Add new example.
+	    - Minor changes.
+	1.2.1:
+		- Start of plugin.
+	
 
 # tags are comma separated with spaces allowed
-tags=productivity,qss,look and feel,style,work flow, configuration
+tags=themes,productivity,qss,look and feel,style,work flow, configuration
 
 homepage=http://hub.qgis.org/projects/LoadQSS
 tracker=http://hub.qgis.org/projects/loadqss/issues
 repository=https://github.com/All4Gis/Load-QSS
-icon=icon.png
+icon=images/icon.png
 
 # experimental flag
 experimental=False

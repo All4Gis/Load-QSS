@@ -19,15 +19,18 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4 import QtCore, QtGui
-from gui.generated.About import Ui_About
-from utils.utils import *
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
+import os.path
 from qgis.core import *
 from qgis.gui import *
-import os.path
- 
+
+from PyQt4 import QtCore, QtGui
+
+from gui.generated.About import Ui_About
+from utils.utils import *
+
+
 try:
     import sys
     from pydevd import *

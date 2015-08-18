@@ -21,9 +21,11 @@
 """
 from PyQt4.QtCore import *
 from PyQt4.QtGui import *
-from qgis.core import *
+import os
 import pickle
+from qgis.core import *
 from qgis.gui import QgsMessageBar
+
 
 try:
     import sys
@@ -31,7 +33,7 @@ try:
 except:
     None; 
 
-#Set style list
+# Set style list
 def setStyleList(StyleList):
     
     s = QSettings()
@@ -47,14 +49,14 @@ def getStyle(Name):
     s = QSettings()
     StyleList = getStyleList()
     if Name in StyleList:
-        name = s.value('myStyles/%s/name'%Name)
-        path = s.value('myStyles/%s/path'%Name)
+        name = s.value('myStyles/%s/name' % Name)
+        path = s.value('myStyles/%s/path' % Name)
     else:
         name = []
         path = []
-    return(name,path)
+    return(name, path)
 
-#Get myStyles list
+# Get myStyles list
 def getStyleList():
     s = QSettings()
     try:
@@ -63,7 +65,7 @@ def getStyleList():
         StyleList = []
     return(StyleList)
 
-#Get Activated
+# Get Activated
 def getActivated():
      
     s = QSettings()
@@ -73,27 +75,34 @@ def getActivated():
         Activated = []
     return(Activated)
 
-#Create or update 
+# Create or update 
 def setStyle(Name, path):
     StyleList = getStyleList()
-    nStyleList = list(set([Name]+StyleList))
+    nStyleList = list(set([Name] + StyleList))
     setStyleList(nStyleList)
     s = QSettings()
-    s.setValue('myStyles/%s/name'%Name, Name)
-    s.setValue('myStyles/%s/path'%Name, path)
+    s.setValue('myStyles/%s/name' % Name, Name)
+    s.setValue('myStyles/%s/path' % Name, path)
 
 # Delete Style
 def delStyle(Name):
+    # settrace()
     s = QSettings()
     StyleList = getStyleList()
     if Name in StyleList:
         StyleList.remove(Name)
         setStyleList(StyleList)
-        s.remove('myStyles/%s/name'%Name)
-        s.remove('myStyles/%s/path'%Name)
-        
-#Activate a specified style
-def activateStyle(Name,iface):
+        # path = s.value('myStyles/%s/path' % Name)
+        s.remove('myStyles/%s/name' % Name)
+        s.remove('myStyles/%s/path' % Name)
+#         try:
+#             os.remove(path)  
+#         except:
+#             None
+                
+         
+# Activate a specified style
+def activateStyle(Name, iface):
  
     name, path = getStyle(Name)
     app = QApplication.instance() 
@@ -102,15 +111,15 @@ def activateStyle(Name,iface):
     except:
         raise
     if not f.exists():
-        iface.messageBar().pushMessage("Error: ", "The path to the * .qss not exist.load default style ", level=QgsMessageBar.CRITICAL, duration=3) 
-        app.setStyleSheet( "" ) 
+        iface.messageBar().pushMessage("Error: ", "The path to the * .qss not exist.Load default style ", level=QgsMessageBar.CRITICAL, duration=3) 
+        app.setStyleSheet("") 
     
     else:
         f.open(QFile.ReadOnly | QFile.Text)
         ts = QTextStream(f)
         stylesheet = ts.readAll()
-        app.setStyleSheet( stylesheet ) 
-        iface.messageBar().pushMessage("Info: ", "Style loaded correctly.", level=QgsMessageBar.INFO, duration=3 ) 
+        app.setStyleSheet(stylesheet) 
+        iface.messageBar().pushMessage("Info: ", "Style loaded correctly.", level=QgsMessageBar.INFO, duration=3) 
  
         setActivated(name)
        

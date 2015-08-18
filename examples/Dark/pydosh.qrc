@@ -1,0 +1,52 @@
+<RCC>
+	<qresource prefix="/">
+		<file>../icons/cross.png</file>
+		<file>../icons/clearsearch.png</file>
+		<file>../icons/tag_yellow.png</file>
+		<file>../icons/search.png</file>
+		<file>../icons/import.png</file>
+		<file>../icons/exit.png</file>
+		<file>../icons/wrench.png</file>
+		<file>../icons/accept.png</file>
+		<file>../icons/add.png</file>
+		<file>../icons/arrow_refresh.png</file>
+		<file>../icons/delete.png</file>
+		<file>../icons/pydosh.png</file>
+		<file>../icons/help.png</file>
+		<file>../icons/brush.png</file>
+		<file>../sql/accounttypes_data.sql</file>
+		<file>../sql/schema.sql</file>
+	</qresource>
+
+	<qresource prefix="/style">
+		<file alias="Dark">darkstyle.qss</file>
+		<file alias="Default">default.qss</file>
+	</qresource>
+
+	<qresource prefix="qss_icons">
+		<file>rc/up_arrow_disabled.png</file>
+		<file>rc/Hmovetoolbar.png</file>
+		<file>rc/stylesheet-branch-end.png</file>
+		<file>rc/branch_closed-on.png</file>
+		<file>rc/stylesheet-vline.png</file>
+		<file>rc/branch_closed.png</file>
+		<file>rc/branch_open-on.png</file>
+		<file>rc/transparent.png</file>
+		<file>rc/right_arrow_disabled.png</file>
+		<file>rc/sizegrip.png</file>
+		<file>rc/close.png</file>
+		<file>rc/down_arrow.png</file>
+		<file>rc/Vmovetoolbar.png</file>
+		<file>rc/left_arrow.png</file>
+		<file>rc/stylesheet-branch-more.png</file>
+		<file>rc/up_arrow.png</file>
+		<file>rc/right_arrow.png</file>
+		<file>rc/left_arrow_disabled.png</file>
+		<file>rc/Hsepartoolbar.png</file>
+		<file>rc/checkbox.png</file>
+		<file>rc/branch_open.png</file>
+		<file>rc/Vsepartoolbar.png</file>
+		<file>rc/down_arrow_disabled.png</file>
+		<file>rc/undock.png</file>
+	</qresource>
+</RCC>

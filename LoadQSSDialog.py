@@ -53,7 +53,8 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
         setStyle("Dark Orange", self.plugin_dir + "\\examples\\DarkOrange\\DarkOrange.qss")
         setStyle("light", self.plugin_dir + "\\examples\\light\\light.qss")
         setStyle("Minimalist", self.plugin_dir + "\\examples\\Minimalist\\Minimalist.qss")
- 
+        setStyle("Wombat", self.plugin_dir + "\\examples\\Wombat\\stylesheet.qss")
+
         self.listStyles.addItems(getStyleList())
         self.currentItem = None
         self.AddAboutButton() 

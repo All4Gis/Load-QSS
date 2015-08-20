@@ -118,8 +118,12 @@ def activateStyle(Name, iface):
         f.open(QFile.ReadOnly | QFile.Text)
         ts = QTextStream(f)
         stylesheet = ts.readAll()
-        app.setStyleSheet(stylesheet) 
-        iface.messageBar().pushMessage("Info: ", "Style loaded correctly.", level=QgsMessageBar.INFO, duration=3) 
+        import re
+        # Update the image paths to use full paths. Fixes image loading in styles
+        path = os.path.dirname(path).replace("\\", "/")
+        stylesheet = re.sub(r'url\((.*?)\)', r'url("{}/\1")'.format(path), stylesheet)
+        app.setStyleSheet(stylesheet)
+        iface.messageBar().pushMessage("Info: ", "Style loaded correctly.", level=QgsMessageBar.INFO, duration=3)
  
         setActivated(name)
        

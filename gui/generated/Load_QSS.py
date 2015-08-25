@@ -3,7 +3,7 @@
 # Form implementation generated from reading ui file 'ui.resources\Load_QSS_dialog_base.ui'
 #
 # Created: Mon Aug 17 22:22:33 2015
-#      by: PyQt4 UI code generator 4.11.3
+# by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -20,11 +20,13 @@ except AttributeError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
+
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
+
 
 class Ui_LoadQSSDialog(object):
     def setupUi(self, LoadQSSDialog):
@@ -70,7 +72,8 @@ class Ui_LoadQSSDialog(object):
         QtCore.QObject.connect(self.Add_btn, QtCore.SIGNAL(_fromUtf8("clicked()")), LoadQSSDialog.AddStyle)
         QtCore.QObject.connect(self.Delete_btn, QtCore.SIGNAL(_fromUtf8("clicked()")), LoadQSSDialog.DeleteStyle)
         QtCore.QObject.connect(self.Default_btn, QtCore.SIGNAL(_fromUtf8("clicked()")), LoadQSSDialog.ResetStyle)
-        QtCore.QObject.connect(self.listStyles, QtCore.SIGNAL(_fromUtf8("itemClicked(QListWidgetItem*)")), LoadQSSDialog.SelectRow)
+        QtCore.QObject.connect(self.listStyles, QtCore.SIGNAL(_fromUtf8("itemClicked(QListWidgetItem*)")),
+                               LoadQSSDialog.SelectRow)
         QtCore.QObject.connect(self.Activate_btn, QtCore.SIGNAL(_fromUtf8("clicked()")), LoadQSSDialog.ApplyStyle)
         QtCore.QMetaObject.connectSlotsByName(LoadQSSDialog)
 

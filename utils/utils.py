@@ -36,7 +36,8 @@ except:
 
 
 def reload_style(path):
-    # TODO WAT?!
+    # Some applications will remove a file and rewrite it.  QFileSystemWatcher will
+    # ignore the file if the file handle goes away so we have to keep adding it.
     watch.removePaths(watch.files())
     watch.addPath(path)
     with open(path, "r") as f:
@@ -128,6 +129,7 @@ def delStyle(Name):
 def activateStyle(Name, iface):
     name, path = getStyle(Name)
     app = QApplication.instance()
+    watch.removePaths(watch.files())
     if not os.path.exists(path):
         iface.messageBar().pushMessage("Error: ", "The path to the * .qss not exist.Load default style ",
                                        level=QgsMessageBar.CRITICAL, duration=3)

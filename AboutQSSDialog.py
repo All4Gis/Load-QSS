@@ -36,9 +36,10 @@ try:
     from pydevd import *
 except:
     None;
- 
+
+
 class AboutQSSDialog(QtGui.QDialog, Ui_About):
-    def __init__(self, iface):      
+    def __init__(self, iface):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
         self.iface = iface

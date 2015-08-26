@@ -38,34 +38,37 @@ try:
     from pydevd import *
 except:
     None;
- 
+
+
 class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
-    def __init__(self, iface):      
+    def __init__(self, iface):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
         self.iface = iface
         self.lastOpenedFile = None
-        self.app = QApplication.instance() 
-        self.plugin_dir = os.path.dirname(__file__);
+        self.app = QApplication.instance()
+        self.plugin_dir = os.path.dirname(os.path.abspath(__file__))
 
-        setStyle("Dark Style", self.plugin_dir + "\\examples\\Dark\\darkstyle.qss")
-        setStyle("Machinery Style", self.plugin_dir + "\\examples\\machinery\\machinery.qss")
-        setStyle("Dark Orange", self.plugin_dir + "\\examples\\DarkOrange\\DarkOrange.qss")
-        setStyle("light", self.plugin_dir + "\\examples\\light\\light.qss")
-        setStyle("Minimalist", self.plugin_dir + "\\examples\\Minimalist\\Minimalist.qss")
-        setStyle("Wombat", self.plugin_dir + "\\examples\\Wombat\\stylesheet.qss")
+        setStyle("Wombat", self.to_exmples_folder("Dark", "darkstyle.qss"))
+        setStyle("Wombat", self.to_exmples_folder("machinery", "machinery.qss"))
+        setStyle("Wombat", self.to_exmples_folder("DarkOrange", "DarkOrange.qss"))
+        setStyle("Wombat", self.to_exmples_folder("light", "light.qss"))
+        setStyle("Wombat", self.to_exmples_folder("Wombat", "stylesheet.qss"))
 
         self.listStyles.addItems(getStyleList())
         self.currentItem = None
-        self.AddAboutButton() 
-    
+        self.AddAboutButton()
+
+    def to_exmples_folder(self, folder, stylesheet):
+        return os.path.join(self.plugin_dir, "examples", folder, stylesheet)
+
     # About
     def about(self):
         self.About = AboutQSSDialog(self.iface)
-        self.About.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint) 
+        self.About.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
         self.About.exec_()
         return
-    
+
     def AddAboutButton(self):
         layout = QVBoxLayout()
         toolBar = QToolBar(self)
@@ -82,19 +85,19 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
         layout.addStretch(0)
         self.setLayout(layout)
         return
-       
+
     # Selected row
     def SelectRow(self, checked):
         if checked:
             self.Delete_btn.setEnabled(True)
-            self.Activate_btn.setEnabled(True) 
+            self.Activate_btn.setEnabled(True)
             self.currentItem = checked
         else:
             self.Delete_btn.setEnabled(False)
             self.Activate_btn.setEnabled(False)
             self.currentItem = None
- 
-    # Add new qss           
+
+    # Add new qss
     def AddStyle(self):
         self.filename = QtGui.QFileDialog.getOpenFileName(self, "Open qss", self.lastOpenedFile, "*.qss")
         if len(self.filename) != 0:
@@ -102,37 +105,38 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
             text, ok = QInputDialog.getText(self, 'Style Name', 'Enter name for Style:', flags=flags)
             if ok:
                 if text == "":
-                    self.iface.messageBar().pushMessage("Error: ", "Enter theme name.", level=QgsMessageBar.CRITICAL, duration=3) 
-                    return 
- 
+                    self.iface.messageBar().pushMessage("Error: ", "Enter theme name.", level=QgsMessageBar.CRITICAL,
+                                                        duration=3)
+                    return
+
                 # Se anade al listado
                 self.listStyles.addItem(text)
                 setStyle(text, self.filename)
-         
+
         return
- 
-    # Remove style in list 
-    def  DeleteStyle(self):  
-            
+
+    # Remove style in list
+    def DeleteStyle(self):
+
         self.listStyles.takeItem(self.listStyles.currentRow())
         delStyle(self.currentItem.text())
         StyleList = getStyleList()
         self.Delete_btn.setEnabled(False)
         self.Activate_btn.setEnabled(False)
-        self.currentItem = None 
- 
+        self.currentItem = None
+
         return
-    
+
     # Apply style
-    def  ApplyStyle(self):
+    def ApplyStyle(self):
         try:
             activateStyle(self.currentItem.text(), self.iface)
         except:
-            None   
+            None
         return
-        
-    # Restores style 
+
+    # Restores style
     def ResetStyle(self):
-        self.app.setStyleSheet("") 
+        self.app.setStyleSheet("")
         setActivated("")
         return

@@ -31,7 +31,6 @@ from utils.utils import *
 
 
 class LoadQSS:
-
     def __init__(self, iface):
         self.iface = iface
         self.plugin_dir = os.path.dirname(__file__)
@@ -44,7 +43,7 @@ class LoadQSS:
 
             if qVersion() > '4.3.3':
                 QCoreApplication.installTranslator(self.translator)
-                
+
         # Activate last style
         try:
             activateStyle(str(getActivated()), self.iface)
@@ -56,7 +55,7 @@ class LoadQSS:
         self.action.triggered.connect(self.run)
         self.iface.addToolBarIcon(self.action)
         self.iface.addPluginToMenu(u"&Load QSS", self.action)
-       
+
         self.actionAbout = QAction(QIcon(":/imgQss/images/info.png"), u"About", self.iface.mainWindow())
         self.iface.addPluginToMenu(u"&Load QSS", self.actionAbout)
         self.actionAbout.triggered.connect(self.About)
@@ -69,13 +68,13 @@ class LoadQSS:
 
     def About(self):
         self.About = AboutQSSDialog(self.iface)
-        self.About.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint) 
+        self.About.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
         self.About.exec_()
         return
-    
+
     def run(self):
         self.dlg = LoadQSSDialog(self.iface)
-        self.dlg.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint) 
+        self.dlg.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
         self.dlg.exec_()
         
         

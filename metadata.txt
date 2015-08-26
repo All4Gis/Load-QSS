@@ -9,12 +9,13 @@
 
 
 [general]
-name=Load QSS
+name=Load QSS - UI themes
 qgisMinimumVersion=2.2
 description=Configure look and feel for Qgis.
 about=Load QSS allows the user to load his/her own *.qss files and change the look and feel of Qgis.Some examples o predefined themes are provided.
 version=1.3.2
 author=Francisco Raga Lopez
+author=Nathan Woodrow
 email=franka1986@gmail.com
 
 # end of mandatory metadata

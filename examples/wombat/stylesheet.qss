@@ -162,11 +162,11 @@ QComboBox::down-arrow
 {
     image: url(icons/down_arrow.png);
 }
-
-QGroupBox:focus
+QLineEdit:focus
 {
-    /*border: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);*/
+    border: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);
 }
+
 
 QTextEdit:focus
 {
@@ -235,6 +235,10 @@ QHeaderView::section
     padding-left: 4px;
     border: 1px solid #6c6c6c;
 }
+QDockWidget
+{
+  	titlebar-close-icon: url(icons/cross.svg);
+}
 
 QDockWidget::separator
 {
@@ -253,7 +257,6 @@ QDockWidget::close-button, QDockWidget::float-button
 {
     text-align: center;
     spacing: 1px; /* spacing between items in the tool bar */
-    background-color: QLinearGradient(x1:0, y1:0, x2:0, y2:1, stop:0 #323232, stop: 0.5 #242424, stop:1 #323232);
 }
 
 QDockWidget::close-button:hover, QDockWidget::float-button:hover
@@ -430,7 +433,7 @@ QAbstractItemView
   background-color: #222;
 	alternate-background-color: #323232;
 	color: silver;
-	border: 1px solid 3A3939;
+	border: none;
 	border-radius: 3px;
 	padding: 1px;
 }
@@ -445,7 +448,7 @@ QAbstractItemView::selected {
 /* ==================================================================================== */
 
 QTreeView {
-    background-color: #333;
+    border: 0.5px solid rgba(108,108,108,75);
 }
 
 QTreeView::item, QTreeView::branch {
@@ -475,6 +478,25 @@ QTreeView::branch:open:has-children:has-siblings {
      image: url(icons/caret-down_ffffff_14.png);
 }
 
+QgsLayerTreeView
+{
+}
+
+QgsLayerTreeView::item
+{
+    border-top: 0.5px solid rgba(108,108,108,50);
+    border-bottom: 0.5px solid rgba(108,108,108,50);
+    padding: 3px;
+}
+
+QgsLayerTreeView::indicator:unchecked{
+    image: url(icons/eye-blocked.svg);
+}
+
+QgsLayerTreeView::indicator:checked {
+    image: url(icons/eye.svg);
+}
+
 /* ==================================================================================== */
 /* TABLE VIEW                                                                           */
 /* ==================================================================================== */
@@ -484,7 +506,7 @@ QHeaderView {
 
 QHeaderView::section {
     background: transparent;
-    background-color: #222;
+    background-color: #323232;
     color: #777;
     border-right: 0px solid #777;
     border-top: 0px solid #777;

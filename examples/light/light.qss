@@ -26,9 +26,9 @@ QComboBox:editable {
 				x1: 0, y1: 0, x2: 0, y2: 1,
 				stop: 0 #8F8F8F,  stop: 1.0 #808080);
  }
-  
 
- QComboBox:on { 
+
+ QComboBox:on {
      padding-top: 3px;
      padding-left: 4px;
  }
@@ -39,7 +39,7 @@ QComboBox:editable {
      width: 15px;
 
      border-left-width: 1px;
-     border-left-style: solid; 
+     border-left-style: solid;
      border-top-right-radius: 3px; /* same radius as the QComboBox */
      border-bottom-right-radius: 3px;
  }
@@ -52,14 +52,14 @@ QComboBox::down-arrow:on { /* shift the arrow when popup is open */
      top: 1px;
      left: 1px;
  }
- 
+
 
  QComboBox QAbstractItemView {
      border: 1px solid darkgray;
      selection-background-color: #8EADCC;;
  }
 /*/////////////////////////////////////////////////////////////////////////*/
-  
+
 QPushButton
 {
 	 border: 1px solid #5B5B5B;
@@ -84,7 +84,7 @@ QPushButton:hover, QPushButton:default:hover
 {
    background: qlineargradient(
 				x1: 0, y1: 0, x2: 0, y2: 1,
-				stop: 0 #7B7B7B, stop: 0.4 #5B5B5B, stop: 0.7 #5B5B5B, stop: 1.0 #6A6A6A);	
+				stop: 0 #7B7B7B, stop: 0.4 #5B5B5B, stop: 0.7 #5B5B5B, stop: 1.0 #6A6A6A);
 }
 
 /*/////////////////////////////////////////////////////////////////////////*/
@@ -114,7 +114,7 @@ QMenu::item {
      background-color:#E7E6E6;
  }
 
- QMenu::separator 
+ QMenu::separator
  {
      height: 1px;
      background: #B2B2B2;
@@ -138,7 +138,7 @@ QTreeView::item:selected {
       width: 11px;
       margin: 15px 0 15px 0;
   }
-  
+
 QScrollBar::handle:vertical {
       background: qlineargradient(
 				x1: 0, y1: 1, x2: 1, y2: 1,
@@ -181,7 +181,7 @@ QScrollBar:horizontal {
       height: 11px;
       margin: 0 15px 0 15px;
   }
-  
+
 QScrollBar::handle:horizontal {
       background: qlineargradient(
 				x1: 0, y1: 0, x2: 0, y2: 1,

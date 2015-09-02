@@ -49,10 +49,11 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
         self.app = QApplication.instance()
         self.plugin_dir = os.path.dirname(os.path.abspath(__file__))
 
-        setStyle("Wombat", self.to_exmples_folder("Dark", "darkstyle.qss"))
-        setStyle("Wombat", self.to_exmples_folder("machinery", "machinery.qss"))
-        setStyle("Wombat", self.to_exmples_folder("DarkOrange", "DarkOrange.qss"))
-        setStyle("Wombat", self.to_exmples_folder("light", "light.qss"))
+        setStyle("Dark", self.to_exmples_folder("Dark", "darkstyle.qss"))
+        setStyle("machinery", self.to_exmples_folder("machinery", "machinery.qss"))
+        setStyle("DarkOrange", self.to_exmples_folder("DarkOrange", "DarkOrange.qss"))
+        setStyle("light", self.to_exmples_folder("light", "light.qss"))
+        setStyle("Minimalist", self.to_exmples_folder("Minimalist", "Minimalist.qss"))
         setStyle("Wombat", self.to_exmples_folder("Wombat", "stylesheet.qss"))
 
         self.listStyles.addItems(getStyleList())

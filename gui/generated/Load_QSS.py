@@ -2,15 +2,12 @@
 
 # Form implementation generated from reading ui file 'ui.resources\Load_QSS_dialog_base.ui'
 #
-# Created: Mon Aug 17 22:22:33 2015
-# by: PyQt4 UI code generator 4.11.3
+# Created: Sat Oct 03 13:25:57 2015
+#      by: PyQt4 UI code generator 4.11.3
 #
 # WARNING! All changes made in this file will be lost!
 
 from PyQt4 import QtCore, QtGui
-
-import resources_rc
-
 
 try:
     _fromUtf8 = QtCore.QString.fromUtf8
@@ -20,13 +17,11 @@ except AttributeError:
 
 try:
     _encoding = QtGui.QApplication.UnicodeUTF8
-
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig, _encoding)
 except AttributeError:
     def _translate(context, text, disambig):
         return QtGui.QApplication.translate(context, text, disambig)
-
 
 class Ui_LoadQSSDialog(object):
     def setupUi(self, LoadQSSDialog):
@@ -72,15 +67,15 @@ class Ui_LoadQSSDialog(object):
         QtCore.QObject.connect(self.Add_btn, QtCore.SIGNAL(_fromUtf8("clicked()")), LoadQSSDialog.AddStyle)
         QtCore.QObject.connect(self.Delete_btn, QtCore.SIGNAL(_fromUtf8("clicked()")), LoadQSSDialog.DeleteStyle)
         QtCore.QObject.connect(self.Default_btn, QtCore.SIGNAL(_fromUtf8("clicked()")), LoadQSSDialog.ResetStyle)
-        QtCore.QObject.connect(self.listStyles, QtCore.SIGNAL(_fromUtf8("itemClicked(QListWidgetItem*)")),
-                               LoadQSSDialog.SelectRow)
+        QtCore.QObject.connect(self.listStyles, QtCore.SIGNAL(_fromUtf8("itemClicked(QListWidgetItem*)")), LoadQSSDialog.SelectRow)
         QtCore.QObject.connect(self.Activate_btn, QtCore.SIGNAL(_fromUtf8("clicked()")), LoadQSSDialog.ApplyStyle)
         QtCore.QMetaObject.connectSlotsByName(LoadQSSDialog)
 
     def retranslateUi(self, LoadQSSDialog):
-        LoadQSSDialog.setWindowTitle(_translate("LoadQSSDialog", "Load QSS", None))
+        LoadQSSDialog.setWindowTitle(_translate("LoadQSSDialog", "Load QSS - UI themes", None))
         self.Add_btn.setText(_translate("LoadQSSDialog", "Add", None))
         self.Delete_btn.setText(_translate("LoadQSSDialog", "Delete", None))
         self.Activate_btn.setText(_translate("LoadQSSDialog", "Activate", None))
         self.Default_btn.setText(_translate("LoadQSSDialog", "Default", None))
 
+import resources_rc

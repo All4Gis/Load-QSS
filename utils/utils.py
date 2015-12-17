@@ -33,7 +33,7 @@ try:
     from pydevd import *
 except:
     None;
-
+ 
 
 def reload_style(path):
     # Some applications will remove a file and rewrite it.  QFileSystemWatcher will
@@ -50,7 +50,7 @@ def reload_style(path):
 
 watch = QFileSystemWatcher()
 watch.fileChanged.connect(reload_style)
-
+ 
 # Set style list
 def setStyleList(StyleList):
     s = QSettings()
@@ -95,7 +95,22 @@ def getActivated():
         Activated = []
     return (Activated)
 
+# Set preview styles
+def setPreview(Name):
+    s = QSettings()
+    s.remove('myStyles/Preview')
+    s.setValue('myStyles/Preview', pickle.dumps(Name))
+    return
 
+# Get preview styles
+def getPreview():
+    s = QSettings()
+    try:
+        Preview = pickle.loads(s.value('myStyles/Preview'))
+    except:
+        Preview = []
+    return (Preview)
+    
 # Create or update
 def setStyle(Name, path):
     StyleList = getStyleList()
@@ -108,7 +123,6 @@ def setStyle(Name, path):
 
 # Delete Style
 def delStyle(Name):
-    # settrace()
     s = QSettings()
     StyleList = getStyleList()
     if Name in StyleList:
@@ -117,16 +131,11 @@ def delStyle(Name):
         # path = s.value('myStyles/%s/path' % Name)
         s.remove('myStyles/%s/name' % Name)
         s.remove('myStyles/%s/path' % Name)
-
-
-# try:
-#             os.remove(path)
-#         except:
-#             None
-
+ 
 
 # Activate a specified style
-def activateStyle(Name, iface):
+def activateStyle(Name, iface,preview=False):
+    
     name, path = getStyle(Name)
     app = QApplication.instance()
     watch.removePaths(watch.files())
@@ -137,5 +146,8 @@ def activateStyle(Name, iface):
     else:
         reload_style(path)
         iface.messageBar().pushMessage("Info: ", "Style loaded correctly.", level=QgsMessageBar.INFO, duration=3)
-        setActivated(name)
+        if preview==False:
+            setActivated(name)
+        else:
+            setPreview(name)
 

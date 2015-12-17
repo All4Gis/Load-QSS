@@ -38,8 +38,7 @@ try:
     from pydevd import *
 except:
     None;
-
-
+ 
 class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
     def __init__(self, iface):
         QtGui.QDialog.__init__(self)
@@ -55,14 +54,24 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
         setStyle("light", self.to_exmples_folder("light", "light.qss"))
         setStyle("Minimalist", self.to_exmples_folder("Minimalist", "Minimalist.qss"))
         setStyle("Wombat", self.to_exmples_folder("Wombat", "stylesheet.qss"))
+        
+        #FreeCAD styles.
+        setStyle("Dark Blue (FreeCAD)", self.to_exmples_folder("Dark Blue (FreeCAD)", "stylesheet.qss"))
+        setStyle("Dark Green (FreeCAD)", self.to_exmples_folder("Dark Green (FreeCAD)", "stylesheet.qss"))
+        setStyle("Dark Orange (FreeCAD)", self.to_exmples_folder("Dark Orange (FreeCAD)", "stylesheet.qss"))
+        setStyle("Light Blue (FreeCAD)", self.to_exmples_folder("Light Blue (FreeCAD)", "stylesheet.qss"))
+        setStyle("Light Green (FreeCAD)", self.to_exmples_folder("Light Green (FreeCAD)", "stylesheet.qss"))
+        setStyle("Light Orange (FreeCAD)", self.to_exmples_folder("Light Orange (FreeCAD)", "stylesheet.qss"))
 
+ 
         self.listStyles.addItems(getStyleList())
         self.currentItem = None
         self.AddAboutButton()
-
+    
+    #Copy styles in examples plugin folder
     def to_exmples_folder(self, folder, stylesheet):
         return os.path.join(self.plugin_dir, "examples", folder, stylesheet)
-
+ 
     # About
     def about(self):
         self.About = AboutQSSDialog(self.iface)
@@ -93,6 +102,7 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
             self.Delete_btn.setEnabled(True)
             self.Activate_btn.setEnabled(True)
             self.currentItem = checked
+            self.ApplyStyle(preview = True)#Preview style.
         else:
             self.Delete_btn.setEnabled(False)
             self.Activate_btn.setEnabled(False)
@@ -115,7 +125,7 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
                 setStyle(text, self.filename)
 
         return
-
+ 
     # Remove style in list
     def DeleteStyle(self):
 
@@ -124,14 +134,18 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
         StyleList = getStyleList()
         self.Delete_btn.setEnabled(False)
         self.Activate_btn.setEnabled(False)
+        #settrace()
+        if(self.currentItem.text()== getPreview()):
+           activateStyle(str(getActivated()), self.iface) 
+        
         self.currentItem = None
 
         return
 
     # Apply style
-    def ApplyStyle(self):
+    def ApplyStyle(self,preview=False):
         try:
-            activateStyle(self.currentItem.text(), self.iface)
+            activateStyle(self.currentItem.text(), self.iface,preview)
         except:
             None
         return
@@ -140,4 +154,9 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
     def ResetStyle(self):
         self.app.setStyleSheet("")
         setActivated("")
+        return
+    
+    # Close dialog
+    def closeEvent(self, evt):
+        activateStyle(str(getActivated()), self.iface) 
         return

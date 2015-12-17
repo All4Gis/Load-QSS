@@ -51,19 +51,19 @@ class LoadQSS:
             None
 
     def initGui(self):
-        self.action = QAction(QIcon(":/imgQss/images/icon.png"), u"Load QSS", self.iface.mainWindow())
+        self.action = QAction(QIcon(":/imgQss/images/icon.png"), u"Load QSS - UI themes", self.iface.mainWindow())
         self.action.triggered.connect(self.run)
         self.iface.addToolBarIcon(self.action)
-        self.iface.addPluginToMenu(u"&Load QSS", self.action)
+        self.iface.addPluginToMenu(u"&Load QSS - UI themes", self.action)
 
         self.actionAbout = QAction(QIcon(":/imgQss/images/info.png"), u"About", self.iface.mainWindow())
-        self.iface.addPluginToMenu(u"&Load QSS", self.actionAbout)
+        self.iface.addPluginToMenu(u"&Load QSS - UI themes", self.actionAbout)
         self.actionAbout.triggered.connect(self.About)
 
 
     def unload(self):
-        self.iface.removePluginMenu(u"&Load QSS", self.action)
-        self.iface.removePluginMenu(u"&Load QSS", self.actionAbout)
+        self.iface.removePluginMenu(u"&Load QSS - UI themes", self.action)
+        self.iface.removePluginMenu(u"&Load QSS - UI themes", self.actionAbout)
         self.iface.removeToolBarIcon(self.action)
 
     def About(self):

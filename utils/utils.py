@@ -71,8 +71,8 @@ def getStyle(Name):
         name = s.value('myStyles/%s/name' % Name)
         path = s.value('myStyles/%s/path' % Name)
     else:
-        name = []
-        path = []
+        name = ""
+        path = ""
     return (name, path)
 
 
@@ -92,8 +92,8 @@ def getActivated():
     try:
         Activated = pickle.loads(s.value('myStyles/Activated'))
     except:
-        Activated = []
-    return (Activated)
+        Activated = ""
+    return Activated
 
 # Set preview styles
 def setPreview(Name):
@@ -108,8 +108,8 @@ def getPreview():
     try:
         Preview = pickle.loads(s.value('myStyles/Preview'))
     except:
-        Preview = []
-    return (Preview)
+        Preview = ""
+    return Preview
     
 # Create or update
 def setStyle(Name, path):
@@ -123,6 +123,7 @@ def setStyle(Name, path):
 
 # Delete Style
 def delStyle(Name):
+    #settrace()
     s = QSettings()
     StyleList = getStyleList()
     if Name in StyleList:
@@ -135,10 +136,15 @@ def delStyle(Name):
 
 # Activate a specified style
 def activateStyle(Name, iface,preview=False):
-    
+    #settrace()
     name, path = getStyle(Name)
     app = QApplication.instance()
+    if name == "":
+        app.setStyleSheet("")
+        return
+   
     watch.removePaths(watch.files())
+ 
     if not os.path.exists(path):
         iface.messageBar().pushMessage("Error: ", "The path to the * .qss not exist.Load default style ",
                                        level=QgsMessageBar.CRITICAL, duration=3)

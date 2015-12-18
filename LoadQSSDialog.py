@@ -47,22 +47,27 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
         self.lastOpenedFile = None
         self.app = QApplication.instance()
         self.plugin_dir = os.path.dirname(os.path.abspath(__file__))
-
-        setStyle("Dark", self.to_exmples_folder("Dark", "darkstyle.qss"))
-        setStyle("machinery", self.to_exmples_folder("machinery", "machinery.qss"))
-        setStyle("DarkOrange", self.to_exmples_folder("DarkOrange", "DarkOrange.qss"))
-        setStyle("light", self.to_exmples_folder("light", "light.qss"))
-        setStyle("Minimalist", self.to_exmples_folder("Minimalist", "Minimalist.qss"))
-        setStyle("Wombat", self.to_exmples_folder("Wombat", "stylesheet.qss"))
         
-        #FreeCAD styles.
-        setStyle("Dark Blue (FreeCAD)", self.to_exmples_folder("Dark Blue (FreeCAD)", "stylesheet.qss"))
-        setStyle("Dark Green (FreeCAD)", self.to_exmples_folder("Dark Green (FreeCAD)", "stylesheet.qss"))
-        setStyle("Dark Orange (FreeCAD)", self.to_exmples_folder("Dark Orange (FreeCAD)", "stylesheet.qss"))
-        setStyle("Light Blue (FreeCAD)", self.to_exmples_folder("Light Blue (FreeCAD)", "stylesheet.qss"))
-        setStyle("Light Green (FreeCAD)", self.to_exmples_folder("Light Green (FreeCAD)", "stylesheet.qss"))
-        setStyle("Light Orange (FreeCAD)", self.to_exmples_folder("Light Orange (FreeCAD)", "stylesheet.qss"))
+        ExampleStyles = dict()
+        
+        ExampleStyles = {
+            "Dark" : "darkstyle.qss",  
+            "machinery" : "machinery.qss",  
+            "DarkOrange" : "DarkOrange.qss",  
+            "light" : "light.qss",  
+            "Minimalist" : "Minimalist.qss",  
+            "Wombat" : "stylesheet.qss",  
+            "Dark Blue (FreeCAD)" : "stylesheet.qss",  
+            "Dark Green (FreeCAD)" : "stylesheet.qss",  
+            "Dark Orange (FreeCAD)" : "stylesheet.qss",  
+            "Light Blue (FreeCAD)" : "stylesheet.qss",  
+            "Light Green (FreeCAD)" : "stylesheet.qss",  
+            "Light Orange (FreeCAD)" : "stylesheet.qss"     
+        }
 
+        for k,v in ExampleStyles.items():
+            setStyle(k, self.to_exmples_folder(k, v))
+ 
  
         self.listStyles.addItems(getStyleList())
         self.currentItem = None
@@ -128,18 +133,29 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
  
     # Remove style in list
     def DeleteStyle(self):
-
+        try:
+            if(self.currentItem.text()== getPreview()):
+ 
+                if (self.currentItem.text()==getActivated()):
+                    ret = QtGui.QMessageBox.question(self, self.tr('Delete Style : '+self.currentItem.text()),
+                        self.tr('The style you are about to remove is your active style.\nThe default Qgis style will be set.\nAre you sure you want to remove it?'),
+                        QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
+                    if ret == QMessageBox.Yes:
+                        self.ResetStyle()
+                    if ret == QMessageBox.No:
+                        return   
+                else:
+                    activateStyle(getActivated(), self.iface)    
+        except Exception as e:
+            None
+ 
         self.listStyles.takeItem(self.listStyles.currentRow())
         delStyle(self.currentItem.text())
         StyleList = getStyleList()
         self.Delete_btn.setEnabled(False)
         self.Activate_btn.setEnabled(False)
-        #settrace()
-        if(self.currentItem.text()== getPreview()):
-           activateStyle(str(getActivated()), self.iface) 
-        
         self.currentItem = None
-
+        
         return
 
     # Apply style
@@ -158,5 +174,5 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
     
     # Close dialog
     def closeEvent(self, evt):
-        activateStyle(str(getActivated()), self.iface) 
+        activateStyle(getActivated(), self.iface) 
         return

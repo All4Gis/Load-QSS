@@ -46,7 +46,7 @@ class LoadQSS:
 
         # Activate last style
         try:
-            activateStyle(str(getActivated()), self.iface)
+            activateStyle(getActivated(), self.iface)
         except:
             None
 

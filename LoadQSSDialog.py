@@ -62,7 +62,8 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
             "Dark Orange (FreeCAD)" : "stylesheet.qss",  
             "Light Blue (FreeCAD)" : "stylesheet.qss",  
             "Light Green (FreeCAD)" : "stylesheet.qss",  
-            "Light Orange (FreeCAD)" : "stylesheet.qss"     
+            "Light Orange (FreeCAD)" : "stylesheet.qss",
+            "Blue Glass" : "blueglass.qss"     
         }
 
         for k,v in ExampleStyles.items():

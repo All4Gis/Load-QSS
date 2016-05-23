@@ -19,8 +19,47 @@
   </property>
   <layout class="QVBoxLayout" name="verticalLayout_2">
    <property name="topMargin">
-    <number>30</number>
+    <number>6</number>
    </property>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="btn_About">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">text-align:left;</string>
+       </property>
+       <property name="text">
+        <string>About</string>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
    <item>
     <layout class="QHBoxLayout" name="horizontalLayout">
      <item>
@@ -175,8 +214,8 @@
    <slot>ResetStyle()</slot>
    <hints>
     <hint type="sourcelabel">
-     <x>296</x>
-     <y>119</y>
+     <x>373</x>
+     <y>148</y>
     </hint>
     <hint type="destinationlabel">
      <x>233</x>
@@ -216,6 +255,22 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>btn_About</sender>
+   <signal>clicked()</signal>
+   <receiver>LoadQSSDialog</receiver>
+   <slot>About()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>45</x>
+     <y>14</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>49</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>AddStyle()</slot>
@@ -224,5 +279,6 @@
   <slot>ResetStyle()</slot>
   <slot>SelectRow()</slot>
   <slot>PreviewStyle()</slot>
+  <slot>About()</slot>
  </slots>
 </ui>

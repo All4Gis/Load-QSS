@@ -5,8 +5,6 @@ import sys
 # except:
 #     None
 
-
-
 def classFactory(iface):
     from LoadQSS import LoadQSS
     return LoadQSS(iface)

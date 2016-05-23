@@ -2,8 +2,8 @@
 
 # Form implementation generated from reading ui file 'ui.resources\Load_QSS_dialog_base.ui'
 #
-# Created: Thu Dec 17 12:26:45 2015
-#      by: PyQt4 UI code generator 4.10.2
+# Created: Mon May 23 17:16:57 2016
+#      by: PyQt4 UI code generator 4.10
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -31,8 +31,20 @@ class Ui_LoadQSSDialog(object):
         icon.addPixmap(QtGui.QPixmap(_fromUtf8(":/imgQss/images/icon.png")), QtGui.QIcon.Normal, QtGui.QIcon.Off)
         LoadQSSDialog.setWindowIcon(icon)
         self.verticalLayout_2 = QtGui.QVBoxLayout(LoadQSSDialog)
-        self.verticalLayout_2.setContentsMargins(-1, 30, -1, -1)
+        self.verticalLayout_2.setContentsMargins(-1, 6, -1, -1)
         self.verticalLayout_2.setObjectName(_fromUtf8("verticalLayout_2"))
+        self.horizontalLayout_2 = QtGui.QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(_fromUtf8("horizontalLayout_2"))
+        self.btn_About = QtGui.QPushButton(LoadQSSDialog)
+        self.btn_About.setMinimumSize(QtCore.QSize(0, 0))
+        self.btn_About.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
+        self.btn_About.setStyleSheet(_fromUtf8("text-align:left;"))
+        self.btn_About.setFlat(True)
+        self.btn_About.setObjectName(_fromUtf8("btn_About"))
+        self.horizontalLayout_2.addWidget(self.btn_About)
+        spacerItem = QtGui.QSpacerItem(40, 20, QtGui.QSizePolicy.Expanding, QtGui.QSizePolicy.Minimum)
+        self.horizontalLayout_2.addItem(spacerItem)
+        self.verticalLayout_2.addLayout(self.horizontalLayout_2)
         self.horizontalLayout = QtGui.QHBoxLayout()
         self.horizontalLayout.setObjectName(_fromUtf8("horizontalLayout"))
         self.listStyles = QtGui.QListWidget(LoadQSSDialog)
@@ -61,8 +73,8 @@ class Ui_LoadQSSDialog(object):
         self.Default_btn.setCursor(QtGui.QCursor(QtCore.Qt.PointingHandCursor))
         self.Default_btn.setObjectName(_fromUtf8("Default_btn"))
         self.verticalLayout.addWidget(self.Default_btn)
-        spacerItem = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
-        self.verticalLayout.addItem(spacerItem)
+        spacerItem1 = QtGui.QSpacerItem(20, 40, QtGui.QSizePolicy.Minimum, QtGui.QSizePolicy.Expanding)
+        self.verticalLayout.addItem(spacerItem1)
         self.horizontalLayout.addLayout(self.verticalLayout)
         self.verticalLayout_2.addLayout(self.horizontalLayout)
         self.label = QtGui.QLabel(LoadQSSDialog)
@@ -85,10 +97,12 @@ class Ui_LoadQSSDialog(object):
         QtCore.QObject.connect(self.Default_btn, QtCore.SIGNAL(_fromUtf8("clicked()")), LoadQSSDialog.ResetStyle)
         QtCore.QObject.connect(self.listStyles, QtCore.SIGNAL(_fromUtf8("itemClicked(QListWidgetItem*)")), LoadQSSDialog.SelectRow)
         QtCore.QObject.connect(self.Activate_btn, QtCore.SIGNAL(_fromUtf8("clicked()")), LoadQSSDialog.ApplyStyle)
+        QtCore.QObject.connect(self.btn_About, QtCore.SIGNAL(_fromUtf8("clicked()")), LoadQSSDialog.About)
         QtCore.QMetaObject.connectSlotsByName(LoadQSSDialog)
 
     def retranslateUi(self, LoadQSSDialog):
         LoadQSSDialog.setWindowTitle(_translate("LoadQSSDialog", "Load QSS - UI themes", None))
+        self.btn_About.setText(_translate("LoadQSSDialog", "About", None))
         self.Add_btn.setText(_translate("LoadQSSDialog", "Add", None))
         self.Delete_btn.setText(_translate("LoadQSSDialog", "Delete", None))
         self.Activate_btn.setText(_translate("LoadQSSDialog", "Activate", None))

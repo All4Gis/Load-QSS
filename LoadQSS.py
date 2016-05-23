@@ -68,13 +68,10 @@ class LoadQSS:
 
     def About(self):
         self.About = AboutQSSDialog(self.iface)
-        self.About.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
+        #self.About.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
         self.About.exec_()
-        return
 
     def run(self):
         self.dlg = LoadQSSDialog(self.iface)
         self.dlg.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
         self.dlg.exec_()
-        
-        

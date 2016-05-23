@@ -1,12 +1,12 @@
 # -*- coding: utf-8 -*-
 """
 /***************************************************************************
- LoadQSS
+IdentityTool
                                  A QGIS plugin
  Configure look and feel
                              -------------------
         begin                : 2015-04-29
-        copyright            : (C) 2015 All4Gis.
+        copyright            : (C) 2016 All4Gis.
         email                : franka1986@gmail.com
  ***************************************************************************/
 
@@ -43,4 +43,3 @@ class AboutQSSDialog(QtGui.QDialog, Ui_About):
         QtGui.QDialog.__init__(self)
         self.setupUi(self)
         self.iface = iface
-        

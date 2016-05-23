@@ -62,7 +62,8 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
             "Dark Orange (FreeCAD)" : "stylesheet.qss",  
             "Light Blue (FreeCAD)" : "stylesheet.qss",  
             "Light Green (FreeCAD)" : "stylesheet.qss",  
-            "Light Orange (FreeCAD)" : "stylesheet.qss"     
+            "Light Orange (FreeCAD)" : "stylesheet.qss",
+            "BlueGlass" : "blueglass.qss"
         }
 
         for k,v in ExampleStyles.items():
@@ -71,35 +72,19 @@ class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
  
         self.listStyles.addItems(getStyleList())
         self.currentItem = None
-        self.AddAboutButton()
-    
-    #Copy styles in examples plugin folder
+ 
+        
+    #Copy style to examples plugin folder
+
     def to_exmples_folder(self, folder, stylesheet):
         return os.path.join(self.plugin_dir, "examples", folder, stylesheet)
  
     # About
-    def about(self):
+    def About(self):
         self.About = AboutQSSDialog(self.iface)
-        self.About.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
+        #self.About.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
         self.About.exec_()
-        return
-
-    def AddAboutButton(self):
-        layout = QVBoxLayout()
-        toolBar = QToolBar(self)
-        toolBar.addAction(u"About", self.about)
-        toolBar.setContextMenuPolicy(QtCore.Qt.DefaultContextMenu)
-        toolBar.setStyleSheet("QToolBar {border-bottom: 0px solid grey }")
-        toolBar.setInputMethodHints(QtCore.Qt.ImhNone)
-        toolBar.setMovable(False)
-        toolBar.setToolButtonStyle(QtCore.Qt.ToolButtonTextUnderIcon)
-        toolBar.setFloatable(False)
-        layout.addWidget(toolBar)
-        layout.setMargin(0)
-        layout.setSpacing(0)
-        layout.addStretch(0)
-        self.setLayout(layout)
-        return
+ 
 
     # Selected row
     def SelectRow(self, checked):

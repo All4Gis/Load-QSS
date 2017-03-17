@@ -19,16 +19,31 @@ IdentityTool
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+# Import the PyQt and QGIS libraries
+from qgis.PyQt.QtCore import Qt
+
+import os
+
+try:
+    from qgis.core import Qgis
+    from PyQt5.QtCore import *
+    from PyQt5.QtGui import *
+    from PyQt5.QtWidgets import *
+    from PyQt5 import uic
+    QT_VERSION=5
+    os.environ['QT_API'] = 'pyqt5'
+except:
+    from PyQt4.QtCore import *
+    from PyQt4.QtGui import *
+    from PyQt4 import uic
+    QT_VERSION=4
+    
 import os.path
 from qgis.core import *
 from qgis.gui import *
-
-from PyQt4 import QtCore, QtGui
-
-from gui.generated.About import Ui_About
-from utils.utils import *
+ 
+from LoadQSS.gui.generated.About import Ui_About
+from LoadQSS.utils.utils import *
 
 
 try:
@@ -37,9 +52,10 @@ try:
 except:
     None;
 
+from PyQt5.QtWidgets import QDialog
 
-class AboutQSSDialog(QtGui.QDialog, Ui_About):
+class AboutQSSDialog(QDialog, Ui_About):
     def __init__(self, iface):
-        QtGui.QDialog.__init__(self)
+        QDialog.__init__(self)
         self.setupUi(self)
         self.iface = iface

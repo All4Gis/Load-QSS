@@ -19,18 +19,33 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+# Import the PyQt and QGIS libraries
+from qgis.PyQt.QtCore import Qt
+import os
+from PyQt5.QtWidgets import QDialog
+
+try:
+    from qgis.core import Qgis
+    from PyQt5.QtCore import *
+    from PyQt5.QtGui import *
+    from PyQt5.QtWidgets import *
+    from PyQt5 import uic
+    QT_VERSION=5
+    os.environ['QT_API'] = 'pyqt5'
+except:
+    from PyQt4.QtCore import *
+    from PyQt4.QtGui import *
+    from PyQt4 import uic
+    QT_VERSION=4
+    
 import os.path
 from qgis.core import *
 from qgis.gui import *
 import shutil
-
-from PyQt4 import QtCore, QtGui
-
-from AboutQSSDialog import AboutQSSDialog
-from gui.generated.Load_QSS import Ui_LoadQSSDialog
-from utils.utils import *
+ 
+from .AboutQSSDialog import AboutQSSDialog
+from LoadQSS.gui.generated.Load_QSS import Ui_LoadQSSDialog
+from LoadQSS.utils.utils import *
 
 
 try:
@@ -39,9 +54,9 @@ try:
 except:
     None;
  
-class LoadQSSDialog(QtGui.QDialog, Ui_LoadQSSDialog):
+class LoadQSSDialog(QDialog, Ui_LoadQSSDialog):
     def __init__(self, iface):
-        QtGui.QDialog.__init__(self)
+        QDialog.__init__(self)
         self.setupUi(self)
         self.iface = iface
         self.lastOpenedFile = None

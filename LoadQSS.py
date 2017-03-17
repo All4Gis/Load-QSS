@@ -19,15 +19,35 @@
  *                                                                         *
  ***************************************************************************/
 """
-from PyQt4.QtCore import *
-from PyQt4.QtGui import *
+# Import the PyQt and QGIS libraries
+from qgis.PyQt.QtCore import Qt
+#from PyQt5 import QtCore, QtGui, QtWidgets
+import os
+from PyQt5.QtWidgets import QDialog
+ 
+try:
+    from qgis.core import Qgis
+    from PyQt5.QtCore import *
+    from PyQt5.QtGui import *
+    from PyQt5.QtWidgets import *
+    from PyQt5 import uic
+    QT_VERSION=5
+    os.environ['QT_API'] = 'pyqt5'
+except:
+    from PyQt4.QtCore import *
+    from PyQt4.QtGui import *
+    from PyQt4 import uic
+    QT_VERSION=4
+    
 import os.path
 from qgis.core import *
 
-from AboutQSSDialog import AboutQSSDialog
-from LoadQSSDialog import LoadQSSDialog
-import gui.generated.resources_rc
-from utils.utils import *
+from .AboutQSSDialog import AboutQSSDialog
+from .LoadQSSDialog import LoadQSSDialog
+
+import LoadQSS.gui.generated.resources_rc   
+ 
+from LoadQSS.utils.utils import *
 
 
 class LoadQSS:
@@ -68,10 +88,10 @@ class LoadQSS:
 
     def About(self):
         self.About = AboutQSSDialog(self.iface)
-        #self.About.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
+        self.About.setWindowFlags(Qt.Window|Qt.WindowCloseButtonHint);
         self.About.exec_()
 
     def run(self):
         self.dlg = LoadQSSDialog(self.iface)
-        self.dlg.setWindowFlags(Qt.WindowSystemMenuHint | Qt.WindowTitleHint)
+        self.dlg.setWindowFlags(Qt.Window|Qt.WindowCloseButtonHint);
         self.dlg.exec_()

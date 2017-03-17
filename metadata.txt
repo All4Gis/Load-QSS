@@ -11,9 +11,10 @@
 [general]
 name=Load QSS - UI themes
 qgisMinimumVersion=2.2
+qgisMaximumVersion=3.99
 description=Configure look and feel for Qgis.
 about=Load QSS allows the user to load his/her own *.qss files and change the look and feel of Qgis.Some examples o predefined themes are provided.
-version=1.3.9
+version=1.4
 author=Francisco Raga , Nathan Woodrow
 email=franka1986@gmail.com
 
@@ -24,6 +25,8 @@ email=franka1986@gmail.com
 # Uncomment the following line and add your changelog entries:
 changelog=    
 	** General **
+	1.4:
+		- QGIS3 Migration
 	1.3.9:
 		- Fixed error in Linux Machine.
 		- Fixed error load Wombat style in Linux Machine.
@@ -63,8 +66,8 @@ changelog=
 # tags are comma separated with spaces allowed
 tags=themes,productivity,qss,look and feel,style,work flow, configuration
 
-homepage=http://hub.qgis.org/projects/LoadQSS
-tracker=http://hub.qgis.org/projects/loadqss/issues
+homepage=https://github.com/All4Gis/Load-QSS
+tracker=https://github.com/All4Gis/Load-QSS/issues
 repository=https://github.com/All4Gis/Load-QSS
 icon=images/icon.png
 

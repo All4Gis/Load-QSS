@@ -4,13 +4,15 @@ qgisMinimumVersion=2.99
 qgisMaximumVersion=3.99
 description=Configure look and feel for Qgis.
 about=Load QSS allows the user to load his/her own *.qss files and change the look and feel of Qgis.Some examples o predefined themes are provided.
-version=1.4
+version=1.4.1
 author=Francisco Raga , Nathan Woodrow
 email=franka1986@gmail.com
 
 # Uncomment the following line and add your changelog entries:
 changelog=    
 	** General **
+	1.4.1:
+		- fix issue in Add Button.
 	1.4:
 		- QGIS3 Migration
 	1.3.9:

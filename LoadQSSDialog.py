@@ -115,7 +115,7 @@ class LoadQSSDialog(QDialog, Ui_LoadQSSDialog):
 
     # Add new qss
     def AddStyle(self):
-        self.filename = QtGui.QFileDialog.getOpenFileName(self, "Open qss", self.lastOpenedFile, "*.qss")
+        self.filename = QFileDialog.getOpenFileName(self, "Open qss", self.lastOpenedFile, "*.qss")
         if len(self.filename) != 0:
             flags = Qt.WindowSystemMenuHint | Qt.WindowTitleHint
             text, ok = QInputDialog.getText(self, 'Style Name', 'Enter name for Style:', flags=flags)
@@ -137,9 +137,9 @@ class LoadQSSDialog(QDialog, Ui_LoadQSSDialog):
             if(self.currentItem.text()== getPreview()):
  
                 if (self.currentItem.text()==getActivated()):
-                    ret = QtGui.QMessageBox.question(self, self.tr('Delete Style : '+self.currentItem.text()),
+                    ret = QMessageBox.question(self, self.tr('Delete Style : '+self.currentItem.text()),
                         self.tr('The style you are about to remove is your active style.\nThe default Qgis style will be set.\nAre you sure you want to remove it?'),
-                        QtGui.QMessageBox.Yes | QtGui.QMessageBox.No, QtGui.QMessageBox.No)
+                        QMessageBox.Yes | QMessageBox.No, QMessageBox.No)
                     if ret == QMessageBox.Yes:
                         self.ResetStyle()
                     if ret == QMessageBox.No:

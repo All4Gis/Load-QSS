@@ -7,7 +7,7 @@
                              -------------------
         begin                : 2015-04-29
         copyright            : (C) 2015 All4Gis.
-        email                : franka1986@gmail.com
+        email                : franka1986 at gmail dot com
  ***************************************************************************/
 
 /***************************************************************************
@@ -21,37 +21,32 @@
 """
 # Import the PyQt and QGIS libraries
 from qgis.PyQt.QtCore import Qt
-
-import os
-
-try:
-    from qgis.core import Qgis
-    from PyQt5.QtCore import *
-    from PyQt5.QtGui import *
-    from PyQt5.QtWidgets import *
-    from PyQt5 import uic
-    QT_VERSION=5
-    os.environ['QT_API'] = 'pyqt5'
-except:
-    from PyQt4.QtCore import *
-    from PyQt4.QtGui import *
-    from PyQt4 import uic
-    QT_VERSION=4
-    
-
-import pickle
-import re
 from qgis.core import *
 from qgis.gui import QgsMessageBar
 from qgis.utils import iface
+import os
+import re
 
 try:
-    import sys
-    from pydevd import *
-except:
-    None;
- 
+    from PyQt5.QtCore import *
+    from PyQt5.QtGui import *
+    from PyQt5.QtWidgets import QApplication
+except ImportError:
+    from PyQt4.QtCore import *
+    from PyQt4.QtGui import *
 
+
+# try:
+#     from pydevd import *
+# except ImportError:
+#     None
+
+app = QApplication.instance()
+s = QSettings()
+# s.remove('myStyles')
+
+
+# Reload style (Watcher)
 def reload_style(path):
     # Some applications will remove a file and rewrite it.  QFileSystemWatcher will
     # ignore the file if the file handle goes away so we have to keep adding it.
@@ -61,33 +56,27 @@ def reload_style(path):
         stylesheet = f.read()
         # Update the image paths to use full paths. Fixes image loading in styles
         path = os.path.dirname(path).replace("\\", "/")
-        stylesheet = re.sub(r'url\((.*?)\)', r'url("{}/\1")'.format(path), stylesheet)
-        QApplication.instance().setStyleSheet(stylesheet)
+        stylesheet = re.sub(r'url\((.*?)\)', r'url("{}/\1")'.format(path),
+                            stylesheet)
+        app.setStyleSheet(stylesheet)
+        app.processEvents()
 
 
 watch = QFileSystemWatcher()
 watch.fileChanged.connect(reload_style)
- 
-# Set style list
-def setStyleList(StyleList):
-    s = QSettings()
-    s.setValue('myStyles/StyleList', pickle.dumps(StyleList))
 
 
+# Set Activated style
 def setActivated(Name):
-    s = QSettings()
-    s.remove('myStyles/Activated')
-    s.setValue('myStyles/Activated', pickle.dumps(Name))
+    s.setValue('myStyles/Activated', Name)
 
 
 # GetStyle row
 def getStyle(Name):
-    s = QSettings()
-    StyleList = getStyleList()
-    if Name in StyleList:
+    try:
         name = s.value('myStyles/%s/name' % Name)
         path = s.value('myStyles/%s/path' % Name)
-    else:
+    except Exception:
         name = ""
         path = ""
     return (name, path)
@@ -95,82 +84,94 @@ def getStyle(Name):
 
 # Get myStyles list
 def getStyleList():
-    s = QSettings()
+    StyleList = []
     try:
-        StyleList = pickle.loads(s.value('myStyles/StyleList'))
-    except:
-        StyleList = []
-    return (StyleList)
+        s.beginGroup("myStyles")
+        StyleList = s.childGroups()
+        s.endGroup()
+    except Exception:
+        None
+    return StyleList
 
 
 # Get Activated
 def getActivated():
-    s = QSettings()
     try:
-        Activated = pickle.loads(s.value('myStyles/Activated'))
-    except:
+        Activated = s.value('myStyles/Activated')
+    except Exception:
         Activated = ""
     return Activated
 
+
 # Set preview styles
 def setPreview(Name):
-    s = QSettings()
-    s.remove('myStyles/Preview')
-    s.setValue('myStyles/Preview', pickle.dumps(Name))
+    s.setValue('myStyles/Preview', Name)
     return
+
 
 # Get preview styles
 def getPreview():
-    s = QSettings()
     try:
-        Preview = pickle.loads(s.value('myStyles/Preview'))
-    except:
+        Preview = s.value('myStyles/Preview')
+    except Exception:
         Preview = ""
     return Preview
-    
+
+
+# Add Examples Styles
+def setExampleStyles(Name, path):
+    s.setValue('myStyles/%s/name' % Name, Name)
+    s.setValue('myStyles/%s/path' % Name, path)
+
+
 # Create or update
-def setStyle(Name, path):
-    StyleList = getStyleList()
-    nStyleList = list(set([Name] + StyleList))
-    setStyleList(nStyleList)
-    s = QSettings()
+def AddNewStyle(Name, path):
     s.setValue('myStyles/%s/name' % Name, Name)
     s.setValue('myStyles/%s/path' % Name, path)
 
 
 # Delete Style
 def delStyle(Name):
-    #settrace()
-    s = QSettings()
-    StyleList = getStyleList()
-    if Name in StyleList:
-        StyleList.remove(Name)
-        setStyleList(StyleList)
-        # path = s.value('myStyles/%s/path' % Name)
+    try:
         s.remove('myStyles/%s/name' % Name)
         s.remove('myStyles/%s/path' % Name)
- 
+    except Exception:
+        None
 
-# Activate a specified style
-def activateStyle(Name, iface,preview=False):
-    #settrace()
+
+# Activate/Preview a specified style
+def activateStyle(Name, iface, preview=False, close=None):
     name, path = getStyle(Name)
-    app = QApplication.instance()
-    if name == "":
+    if name == "" or name is None:
         app.setStyleSheet("")
         return
-   
+
     watch.removePaths(watch.files())
- 
-    if not os.path.exists(path):
-        iface.messageBar().pushMessage("Error: ", "The path to the * .qss not exist.Load default style ",
-                                       level=QgsMessageBar.CRITICAL, duration=3)
+    iface.messageBar().clearWidgets()
+
+    if path == "" or path is None:
         app.setStyleSheet("")
+        return
+
+    if not os.path.exists(path):
+        iface.messageBar().pushMessage("Error: "+path+" : ",
+                                       "The path to the * .qss not exist.Load default style ",
+                                       level=QgsMessageBar.CRITICAL,
+                                       duration=2)
+        app.setStyleSheet("")
+        return
+
+    if close is not None:
+        return
     else:
         reload_style(path)
-        iface.messageBar().pushMessage("Info: ", "Style loaded correctly.", level=QgsMessageBar.INFO, duration=3)
-        if preview==False:
+        if preview is False:
             setActivated(name)
+            iface.messageBar().pushMessage("Style "+name+" : ", "Style loaded correctly.",
+                                           level=QgsMessageBar.INFO, duration=2)
+            return
         else:
             setPreview(name)
-
+            iface.messageBar().pushMessage("Style "+name+" : ", "Style Preview loaded correctly.",
+                                           level=QgsMessageBar.INFO, duration=2)
+            return

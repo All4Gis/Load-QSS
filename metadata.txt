@@ -2,15 +2,27 @@
 name=Load QSS - UI themes
 qgisMinimumVersion=2.99
 qgisMaximumVersion=3.99
-description=Configure look and feel for Qgis.
-about=Load QSS allows the user to load his/her own *.qss files and change the look and feel of Qgis.Some examples o predefined themes are provided.
-version=1.4.1
-author=Francisco Raga , Nathan Woodrow
+description=Configure look and feel for Qgis
+about=<b>Load QSS allows the user to load his/her own *.qss files and change the look and feel of Qgis.</b>
+	<BR />
+	Some examples o predefined themes are provided.
+   
+	<div style="width:400px; height:200px;overflow:scroll; overflow-x: hidden; overflow-y: hidden;">
+		<img src="https://goo.gl/GgTCxc" width="300" height="200!important"/>
+	</div>
+	<a href="https://all4gis.github.io//">Author website</a>
+	
+version=1.4.2
+author=Francisco Raga
 email=franka1986@gmail.com
 
-# Uncomment the following line and add your changelog entries:
 changelog=    
 	** General **
+	1.4.2:
+		- Add more examples
+		- Clean code
+		- Fix add style action
+		- Minor changes
 	1.4.1:
 		- fix issue in Add Button.
 	1.4:
@@ -50,8 +62,6 @@ changelog=
 	1.2.1:
 		- Start of plugin.
 	
-
-# tags are comma separated with spaces allowed
 tags=themes,productivity,qss,look and feel,style,work flow, configuration
 
 homepage=https://github.com/All4Gis/Load-QSS

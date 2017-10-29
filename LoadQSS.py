@@ -7,7 +7,7 @@
                              -------------------
         begin                : 2015-04-29
         copyright            : (C) 2015 All4Gis.
-        email                : franka1986@gmail.com
+        email                : franka1986 at gmail dot com
  ***************************************************************************/
 
 /***************************************************************************
@@ -20,66 +20,74 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
+from .AboutQSSDialog import AboutQSSDialog
+from .LoadQSSDialog import LoadQSSDialog
+from LoadQSS.utils.utils import *
 from qgis.PyQt.QtCore import Qt
-#from PyQt5 import QtCore, QtGui, QtWidgets
+import LoadQSS.gui.generated.resources_rc
 import os
-from PyQt5.QtWidgets import QDialog
- 
+
 try:
-    from qgis.core import Qgis
     from PyQt5.QtCore import *
     from PyQt5.QtGui import *
     from PyQt5.QtWidgets import *
-    from PyQt5 import uic
-    QT_VERSION=5
-    os.environ['QT_API'] = 'pyqt5'
-except:
+except ImportError:
     from PyQt4.QtCore import *
     from PyQt4.QtGui import *
-    from PyQt4 import uic
-    QT_VERSION=4
-    
-import os.path
-from qgis.core import *
 
-from .AboutQSSDialog import AboutQSSDialog
-from .LoadQSSDialog import LoadQSSDialog
-
-import LoadQSS.gui.generated.resources_rc   
- 
-from LoadQSS.utils.utils import *
+# try:
+#     from pydevd import *
+# except ImportError:
+#     None
 
 
 class LoadQSS:
     def __init__(self, iface):
         self.iface = iface
-        self.plugin_dir = os.path.dirname(__file__)
-        locale = QSettings().value("locale/userLocale")[0:2]
-        localePath = os.path.join(self.plugin_dir, 'i18n', 'LoadQSS_{}.qm'.format(locale))
+        self.plugin_dir = os.path.dirname(os.path.abspath(__file__))
 
-        if os.path.exists(localePath):
-            self.translator = QTranslator()
-            self.translator.load(localePath)
+        # Examples
+        ExampleStyles = {
+            "Dark": "darkstyle.qss",
+            "machinery": "machinery.qss",
+            "DarkOrange": "DarkOrange.qss",
+            "light": "light.qss",
+            "Minimalist": "Minimalist.qss",
+            "Wombat": "stylesheet.qss",
+            "Dark Blue (FreeCAD)": "stylesheet.qss",
+            "Dark Green (FreeCAD)": "stylesheet.qss",
+            "Dark Orange (FreeCAD)": "stylesheet.qss",
+            "Light Blue (FreeCAD)": "stylesheet.qss",
+            "Light Green (FreeCAD)": "stylesheet.qss",
+            "Light Orange (FreeCAD)": "stylesheet.qss",
+            "BlueGlass": "blueglass.qss",
+            "Coffee": "coffee.qss"
+        }
 
-            if qVersion() > '4.3.3':
-                QCoreApplication.installTranslator(self.translator)
+        for k, v in ExampleStyles.items():
+            setExampleStyles(k, self.to_exmples_folder(k, v))
 
-        # Activate last style
         try:
+            # Activate last style
             activateStyle(getActivated(), self.iface)
-        except:
+        except Exception:
             None
 
+    # Copy style to examples plugin folder
+    def to_exmples_folder(self, folder, stylesheet):
+        return os.path.join(self.plugin_dir, "examples", folder, stylesheet)
+
     def initGui(self):
-        self.action = QAction(QIcon(":/imgQss/images/icon.png"), u"Load QSS - UI themes", self.iface.mainWindow())
+        self.action = QAction(QIcon(":/imgQss/images/icon.png"),
+                              u"Load QSS - UI themes", self.iface.mainWindow())
         self.action.triggered.connect(self.run)
         self.iface.addToolBarIcon(self.action)
         self.iface.addPluginToMenu(u"&Load QSS - UI themes", self.action)
 
-        self.actionAbout = QAction(QIcon(":/imgQss/images/info.png"), u"About", self.iface.mainWindow())
+        self.actionAbout = QAction(QIcon(":/imgQss/images/info.png"),
+                                   u"About", self.iface.mainWindow())
         self.iface.addPluginToMenu(u"&Load QSS - UI themes", self.actionAbout)
         self.actionAbout.triggered.connect(self.About)
-
 
     def unload(self):
         self.iface.removePluginMenu(u"&Load QSS - UI themes", self.action)
@@ -88,10 +96,10 @@ class LoadQSS:
 
     def About(self):
         self.About = AboutQSSDialog(self.iface)
-        self.About.setWindowFlags(Qt.Window|Qt.WindowCloseButtonHint);
+        self.About.setWindowFlags(Qt.Window | Qt.WindowCloseButtonHint)
         self.About.exec_()
 
     def run(self):
         self.dlg = LoadQSSDialog(self.iface)
-        self.dlg.setWindowFlags(Qt.Window|Qt.WindowCloseButtonHint);
+        self.dlg.setWindowFlags(Qt.Window | Qt.WindowCloseButtonHint)
         self.dlg.exec_()

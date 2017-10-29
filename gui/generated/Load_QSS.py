@@ -2,7 +2,7 @@
 
 # Form implementation generated from reading ui file 'ui.resources\Load_QSS_dialog_base.ui'
 #
-# Created by: PyQt5 UI code generator 5.8.1
+# Created by: PyQt5 UI code generator 5.9
 #
 # WARNING! All changes made in this file will be lost!
 
@@ -95,4 +95,4 @@ class Ui_LoadQSSDialog(object):
         self.Default_btn.setText(_translate("LoadQSSDialog", "Default"))
         self.label.setText(_translate("LoadQSSDialog", "We provide some styles as an example to show the personalizing capabilities of the interface. Some styles may have elements that can be improved. Therefore, we encourage you to improve them or to create your own designs."))
 
-from . import  resources_rc
+from . import resources_rc

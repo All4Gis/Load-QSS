@@ -4,7 +4,8 @@ Change look and feel for Qgis
 Load QSS allows the user to load his/her own *.qss files and change the look and feel of Qgis.Some examples o predefined themes are provided.
 
 Click on the image to see the demo video.
-[![Watch the video (Spanish)](https://i.imgur.com/LYry7tz.png)](https://youtu.be/WcjB7GvqJ0o "QSS")
+
+[![Watch the video (Spanish)](https://i.imgur.com/PQF0eT8l.png)](https://youtu.be/WcjB7GvqJ0o "QSS")
 
 ## Donations
 Want to buy me a beer (or gadget)? Please use Paypal button on the project page, [![Donate](https://img.shields.io/badge/Donate-PayPal-green.svg)](https://www.paypal.me/all4gis) , or contact me directly.

@@ -21,19 +21,15 @@
 """
 # Import the PyQt and QGIS libraries
 from .AboutQSSDialog import AboutQSSDialog
-from LoadQSS.gui.generated.Load_QSS import Ui_LoadQSSDialog
-from LoadQSS.utils.utils import *
+from qgis.PyQt import uic
+from .utils.utils import *
 from qgis.PyQt.QtCore import Qt
 from qgis.gui import *
 import os
 
-try:
-    from PyQt5.QtCore import *
-    from PyQt5.QtGui import *
-    from PyQt5.QtWidgets import *
-except ImportError:
-    from PyQt4.QtCore import *
-    from PyQt4.QtGui import *
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 
 
 # try:
@@ -42,11 +38,21 @@ except ImportError:
 #     None
 
 
-class LoadQSSDialog(QDialog, Ui_LoadQSSDialog):
+class LoadQSSDialog(QDialog):
     def __init__(self, iface):
         QDialog.__init__(self)
-        self.setupUi(self)
         self.iface = iface
+
+        # Load UI at runtime for Qt6 compatibility
+        plugin_dir = os.path.dirname(os.path.abspath(__file__))
+        ui_file = os.path.join(plugin_dir, 'ui.resources', 'Load_QSS_dialog_base.ui')
+        uic.loadUi(ui_file, self)
+        
+        # Fix window icon for Qt6 compatibility
+        icon_path = os.path.join(plugin_dir, "images", "icon.png")
+        if os.path.exists(icon_path):
+            self.setWindowIcon(QIcon(icon_path))
+        
         self.lastOpenedFile = None
         self.app = QApplication.instance()
         self.listStyles.addItems(getStyleList())
@@ -59,8 +65,8 @@ class LoadQSSDialog(QDialog, Ui_LoadQSSDialog):
     # About
     def About(self):
         self.About = AboutQSSDialog(self.iface)
-        self.About.setWindowFlags(Qt.Window | Qt.WindowCloseButtonHint)
-        self.About.exec_()
+        self.About.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowCloseButtonHint)
+        self.About.exec()
 
     # Selected row
     def SelectRow(self, checked):
@@ -80,7 +86,7 @@ class LoadQSSDialog(QDialog, Ui_LoadQSSDialog):
                                                        self.lastOpenedFile,
                                                        "*.qss")
         if self.filename:
-            flags = Qt.WindowSystemMenuHint | Qt.WindowTitleHint
+            flags = Qt.WindowType.WindowSystemMenuHint | Qt.WindowType.WindowTitleHint
             text, ok = QInputDialog.getText(self, 'Style Name',
                                             'Enter name for Style:',
                                             flags=flags)
@@ -110,11 +116,11 @@ class LoadQSSDialog(QDialog, Ui_LoadQSSDialog):
                                                'The style you are about to remove is your active style.\n' +
                                                'The default Qgis style will be set.\n' +
                                                'Are you sure you want to remove it?',
-                                               QMessageBox.Yes |
-                                               QMessageBox.No, QMessageBox.No)
-                    if ret == QMessageBox.Yes:
+                                               QMessageBox.StandardButton.Yes |
+                                               QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
+                    if ret == QMessageBox.StandardButton.Yes:
                         self.ResetStyle()
-                    if ret == QMessageBox.No:
+                    if ret == QMessageBox.StandardButton.No:
                         return
                 else:
                     activateStyle(getActivated(), self.iface)

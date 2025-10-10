@@ -2,6 +2,7 @@
 name=Load QSS - UI themes
 qgisMinimumVersion=2.99
 qgisMaximumVersion=3.99
+supportsQt6=True
 description=Configure look and feel for Qgis
 about=<b>Load QSS allows the user to load his/her own *.qss files and change the look and feel of Qgis.</b>
 	<BR />

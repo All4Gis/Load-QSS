@@ -22,18 +22,18 @@
 # Import the PyQt and QGIS libraries
 from .AboutQSSDialog import AboutQSSDialog
 from .LoadQSSDialog import LoadQSSDialog
-from LoadQSS.utils.utils import *
+from .utils.utils import *
 from qgis.PyQt.QtCore import Qt
-import LoadQSS.gui.generated.resources_rc
+try:
+    from .gui.generated import resources_rc
+except ImportError:
+    # Fallback for runtime UI loading
+    pass
 import os
 
-try:
-    from PyQt5.QtCore import *
-    from PyQt5.QtGui import *
-    from PyQt5.QtWidgets import *
-except ImportError:
-    from PyQt4.QtCore import *
-    from PyQt4.QtGui import *
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 
 # try:
 #     from pydevd import *
@@ -78,13 +78,18 @@ class LoadQSS:
         return os.path.join(self.plugin_dir, "examples", folder, stylesheet)
 
     def initGui(self):
-        self.action = QAction(QIcon(":/imgQss/images/icon.png"),
+        # Use absolute paths for Qt6 compatibility
+        icon_path = os.path.join(self.plugin_dir, "images", "icon.png")
+        info_icon_path = os.path.join(self.plugin_dir, "images", "info.png")
+        
+        self.action = QAction(QIcon(icon_path),
                               u"Load QSS - UI themes", self.iface.mainWindow())
+        self.action.setObjectName('mLoadQSS')
         self.action.triggered.connect(self.run)
         self.iface.addToolBarIcon(self.action)
         self.iface.addPluginToMenu(u"&Load QSS - UI themes", self.action)
 
-        self.actionAbout = QAction(QIcon(":/imgQss/images/info.png"),
+        self.actionAbout = QAction(QIcon(info_icon_path),
                                    u"About", self.iface.mainWindow())
         self.iface.addPluginToMenu(u"&Load QSS - UI themes", self.actionAbout)
         self.actionAbout.triggered.connect(self.About)
@@ -96,10 +101,10 @@ class LoadQSS:
 
     def About(self):
         self.About = AboutQSSDialog(self.iface)
-        self.About.setWindowFlags(Qt.Window | Qt.WindowCloseButtonHint)
-        self.About.exec_()
+        self.About.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowCloseButtonHint)
+        self.About.exec()
 
     def run(self):
         self.dlg = LoadQSSDialog(self.iface)
-        self.dlg.setWindowFlags(Qt.Window | Qt.WindowCloseButtonHint)
-        self.dlg.exec_()
+        self.dlg.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowCloseButtonHint)
+        self.dlg.exec()

@@ -24,11 +24,6 @@ from .AboutQSSDialog import AboutQSSDialog
 from .LoadQSSDialog import LoadQSSDialog
 from .utils.utils import *
 from qgis.PyQt.QtCore import Qt
-try:
-    from .gui.generated import resources_rc
-except ImportError:
-    # Fallback for runtime UI loading
-    pass
 import os
 
 from qgis.PyQt.QtCore import *

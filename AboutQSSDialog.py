@@ -20,19 +20,15 @@ IdentityTool
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
-from LoadQSS.gui.generated.About import Ui_About
-from LoadQSS.utils.utils import *
+import os
+from qgis.PyQt import uic
+from .utils.utils import *
 from qgis.core import *
 from qgis.gui import *
 
-try:
-    from PyQt5.QtCore import *
-    from PyQt5.QtGui import *
-    from PyQt5.QtWidgets import *
-except ImportError:
-    from PyQt4.QtCore import *
-    from PyQt4.QtGui import *
-
+from qgis.PyQt.QtCore import *
+from qgis.PyQt.QtGui import *
+from qgis.PyQt.QtWidgets import *
 
 try:
     from pydevd import *
@@ -40,8 +36,12 @@ except ImportError:
     None
 
 
-class AboutQSSDialog(QDialog, Ui_About):
+class AboutQSSDialog(QDialog):
     def __init__(self, iface):
         QDialog.__init__(self)
-        self.setupUi(self)
         self.iface = iface
+        
+        # Load UI file
+        plugin_dir = os.path.dirname(os.path.abspath(__file__))
+        ui_file = os.path.join(plugin_dir, 'ui.resources', 'About.ui')
+        uic.loadUi(ui_file, self)

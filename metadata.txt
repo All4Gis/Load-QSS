@@ -13,12 +13,14 @@ about=<b>Load QSS allows the user to load his/her own *.qss files and change the
 	</div>
 	<a href="https://all4gis.github.io//">Author website</a>
 	
-version=1.4.2
+version=1.4.3
 author=Francisco Raga
 email=franka1986@gmail.com
 
 changelog=    
 	** General **
+	1.4.3:
+		- Qt6 Compatibility (Thanks Nimrod51)
 	1.4.2:
 		- Add more examples
 		- Clean code

@@ -38,7 +38,7 @@ from qgis.PyQt.QtWidgets import *
 #     None
 
 app = QApplication.instance()
-s = QSettings()
+s = QgsSettings()
 # s.remove('myStyles')
 
 

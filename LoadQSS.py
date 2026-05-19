@@ -20,6 +20,7 @@
  ***************************************************************************/
 """
 # Import the PyQt and QGIS libraries
+from qgis.core import QgsMessageLog, Qgis
 from .AboutQSSDialog import AboutQSSDialog
 from .LoadQSSDialog import LoadQSSDialog
 from .utils.utils import *
@@ -62,12 +63,6 @@ class LoadQSS:
         for k, v in ExampleStyles.items():
             setExampleStyles(k, self.to_exmples_folder(k, v))
 
-        try:
-            # Activate last style
-            activateStyle(getActivated(), self.iface)
-        except Exception:
-            None
-
     # Copy style to examples plugin folder
     def to_exmples_folder(self, folder, stylesheet):
         return os.path.join(self.plugin_dir, "examples", folder, stylesheet)
@@ -88,6 +83,23 @@ class LoadQSS:
                                    u"About", self.iface.mainWindow())
         self.iface.addPluginToMenu(u"&Load QSS - UI themes", self.actionAbout)
         self.actionAbout.triggered.connect(self.About)
+        
+        # Wait for QGIS to finish booting before applying the theme
+        self.iface.initializationCompleted.connect(self.startup_style_check)
+
+    def startup_style_check(self):
+        try:
+            saved_style = getActivated()
+            if saved_style:
+                activateStyle(saved_style, self.iface)
+        except Exception as e:
+            # Backward compatibility for QGIS 3 (PyQt5) and QGIS 4 (PyQt6) enums
+            if hasattr(Qgis, "MessageLevel"):
+                warning_level = Qgis.MessageLevel.Warning
+            else:
+                warning_level = Qgis.Warning
+                
+            QgsMessageLog.logMessage(f"LoadQSS Startup Error: {e}", "LoadQSS", warning_level)
 
     def unload(self):
         self.iface.removePluginMenu(u"&Load QSS - UI themes", self.action)

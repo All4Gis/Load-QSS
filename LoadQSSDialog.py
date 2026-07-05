@@ -15,141 +15,132 @@
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
- #   any later version.                                                    *
+ *   any later version.                                                    *
  *                                                                         *
  ***************************************************************************/
 """
-# Import the PyQt and QGIS libraries
-from .AboutQSSDialog import AboutQSSDialog
+
 from qgis.PyQt import uic
-from .utils.utils import *
 from qgis.PyQt.QtCore import Qt
-from qgis.gui import *
+from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtWidgets import QDialog, QApplication, QFileDialog, QInputDialog, QMessageBox
+from qgis.gui import QgsMessageBar
+from .aboutQSSDialog import AboutQSSDialog
+from .utils.utils import (
+    getStyleList,
+    getPreview,
+    getActivated,
+    activateStyle,
+    setActivated,
+    delStyle,
+    addNewStyle,
+)
 import os
 
-from qgis.PyQt.QtCore import *
-from qgis.PyQt.QtGui import *
-from qgis.PyQt.QtWidgets import *
-
-
-# try:
-#     from pydevd import *
-# except ImportError:
-#     None
+PLUGIN_DIR = os.path.dirname(os.path.abspath(__file__))
 
 
 class LoadQSSDialog(QDialog):
     def __init__(self, iface):
+        """Initialize the theme manager dialog with UI elements."""
         QDialog.__init__(self)
+        self.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowCloseButtonHint)
         self.iface = iface
 
-        # Load UI at runtime for Qt6 compatibility
-        plugin_dir = os.path.dirname(os.path.abspath(__file__))
-        ui_file = os.path.join(plugin_dir, 'ui.resources', 'Load_QSS_dialog_base.ui')
-        uic.loadUi(ui_file, self)
-        
-        # Fix window icon for Qt6 compatibility
-        icon_path = os.path.join(plugin_dir, "images", "icon.png")
-        if os.path.exists(icon_path):
-            self.setWindowIcon(QIcon(icon_path))
-        
+        uiFile = os.path.join(PLUGIN_DIR, "ui", "loadQSSDialog.ui")
+        uic.loadUi(uiFile, self)
+
+        iconPath = os.path.join(PLUGIN_DIR, "images", "icon.png")
+        if os.path.exists(iconPath):
+            self.setWindowIcon(QIcon(iconPath))
+
         self.lastOpenedFile = None
         self.app = QApplication.instance()
         self.listStyles.addItems(getStyleList())
         self.currentItem = None
 
-    # Copy style to examples plugin folder
-    def to_exmples_folder(self, folder, stylesheet):
-        return os.path.join(self.plugin_dir, "examples", folder, stylesheet)
+    def about(self):
+        """Display the About dialog with plugin information."""
+        dlg = AboutQSSDialog()
+        dlg.exec()
 
-    # About
-    def About(self):
-        self.About = AboutQSSDialog(self.iface)
-        self.About.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowCloseButtonHint)
-        self.About.exec()
-
-    # Selected row
-    def SelectRow(self, checked):
+    def selectRow(self, checked):
+        """Handle list item selection and enable/disable action buttons."""
         if checked:
-            self.Delete_btn.setEnabled(True)
-            self.Activate_btn.setEnabled(True)
+            self.deleteBtn.setEnabled(True)
+            self.activateBtn.setEnabled(True)
             self.currentItem = checked
-            self.ApplyStyle(preview=True)
+            self.applyStyle(preview=True)
         else:
-            self.Delete_btn.setEnabled(False)
-            self.Activate_btn.setEnabled(False)
+            self.deleteBtn.setEnabled(False)
+            self.activateBtn.setEnabled(False)
             self.currentItem = None
 
-    # Add new qss
-    def AddStyle(self):
-        self.filename, _ = QFileDialog.getOpenFileName(self, "Open qss",
-                                                       self.lastOpenedFile,
-                                                       "*.qss")
-        if self.filename:
-            flags = Qt.WindowType.WindowSystemMenuHint | Qt.WindowType.WindowTitleHint
-            text, ok = QInputDialog.getText(self, 'Style Name',
-                                            'Enter name for Style:',
-                                            flags=flags)
-            if ok:
-                if text == "":
-                    self.iface.messageBar().clearWidgets()
-                    self.iface.messageBar().pushMessage("Error: ",
-                                                        "Enter theme name.",
-                                                        level=QgsMessageBar.CRITICAL,
-                                                        duration=3)
-                    return
+    def addStyle(self):
+        """Import a new QSS file and add it to the style list."""
+        filename, _ = QFileDialog.getOpenFileName(self, "Open qss", self.lastOpenedFile, "*.qss")
+        if not filename:
+            return
 
-                # Add to list
-                self.listStyles.addItem(text)
-                # TODO :Copy style to examples folder
-                AddNewStyle(text, self.filename)
+        flags = Qt.WindowType.WindowSystemMenuHint | Qt.WindowType.WindowTitleHint
+        text, ok = QInputDialog.getText(self, "Style Name", "Enter name for Style:", flags=flags)
+        if not ok:
+            return
 
-        return
+        if not text:
+            self.iface.messageBar().clearWidgets()
+            self.iface.messageBar().pushMessage(
+                "Error: ", "Enter theme name.", level=QgsMessageBar.CRITICAL, duration=3
+            )
+            return
 
-    # Remove style in list
-    def DeleteStyle(self):
+        self.listStyles.addItem(text)
+        addNewStyle(text, filename)
+
+    def deleteStyle(self):
+        """Remove the selected style from the list and settings."""
         try:
-            if(self.currentItem.text() == getPreview()):
-                if (self.currentItem.text() == getActivated()):
-                    ret = QMessageBox.question(self, 'Delete Style : '
-                                               + self.currentItem.text(),
-                                               'The style you are about to remove is your active style.\n' +
-                                               'The default Qgis style will be set.\n' +
-                                               'Are you sure you want to remove it?',
-                                               QMessageBox.StandardButton.Yes |
-                                               QMessageBox.StandardButton.No, QMessageBox.StandardButton.No)
-                    if ret == QMessageBox.StandardButton.Yes:
-                        self.ResetStyle()
-                    if ret == QMessageBox.StandardButton.No:
-                        return
+            styleName = self.currentItem.text()
+            isActive = styleName == getActivated()
+            isPreview = styleName == getPreview()
+
+            if isActive or isPreview:
+                msgBox = QMessageBox(self)
+                msgBox.setIcon(QMessageBox.Icon.Warning)
+                msgBox.setWindowIcon(QIcon(os.path.join(PLUGIN_DIR, "images", "info.png")))
+                msgBox.setWindowTitle("Delete Style: " + styleName)
+                msgBox.setText(
+                    "This style is currently active. It will be removed and the default QGIS style will be set.\n"
+                    "Are you sure?"
+                )
+                msgBox.setStandardButtons(QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No)
+                msgBox.setDefaultButton(QMessageBox.StandardButton.No)
+                ret = msgBox.exec()
+                if ret == QMessageBox.StandardButton.Yes:
+                    self.resetStyle()
                 else:
-                    activateStyle(getActivated(), self.iface)
-        except Exception:
-            None
+                    return
+        except AttributeError:
+            pass
 
         self.listStyles.takeItem(self.listStyles.currentRow())
         delStyle(self.currentItem.text())
-        self.Delete_btn.setEnabled(False)
-        self.Activate_btn.setEnabled(False)
+        self.deleteBtn.setEnabled(False)
+        self.activateBtn.setEnabled(False)
         self.currentItem = None
 
-        return
-
-    # Apply style
-    def ApplyStyle(self, preview=False):
+    def applyStyle(self, preview=False):
+        """Apply the selected style to QGIS, optionally as preview only."""
         try:
             activateStyle(self.currentItem.text(), self.iface, preview)
-        except Exception:
-            None
-        return
+        except AttributeError:
+            pass
 
-    # Restores style
-    def ResetStyle(self):
+    def resetStyle(self):
+        """Reset to default QGIS style by clearing the stylesheet."""
         self.app.setStyleSheet("")
         setActivated("")
-        return
 
-    # Close dialog
     def closeEvent(self, evt):
+        """Restore the active style when the dialog is closed."""
         activateStyle(getActivated(), self.iface, close=True)
-        return

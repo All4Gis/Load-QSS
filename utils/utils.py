@@ -15,159 +15,144 @@
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
- #   any later version.                                                    *
+ *   any later version.                                                    *
  *                                                                         *
  ***************************************************************************/
 """
-# Import the PyQt and QGIS libraries
-from qgis.PyQt.QtCore import Qt
-from qgis.core import *
+
+from qgis.core import QgsSettings
+from qgis.PyQt.QtCore import QFileSystemWatcher
+from qgis.PyQt.QtWidgets import QApplication
 from qgis.gui import QgsMessageBar
-from qgis.utils import iface
 import os
 import re
 
-from qgis.PyQt.QtCore import *
-from qgis.PyQt.QtGui import *
-from qgis.PyQt.QtWidgets import *
-
-
-# try:
-#     from pydevd import *
-# except ImportError:
-#     None
-
 app = QApplication.instance()
 s = QgsSettings()
-# s.remove('myStyles')
+watch = QFileSystemWatcher()
+watch.fileChanged.connect(lambda path: reloadStyle(path))
 
 
-# Reload style (Watcher)
-def reload_style(path):
-    # Some applications will remove a file and rewrite it.  QFileSystemWatcher will
-    # ignore the file if the file handle goes away so we have to keep adding it.
+def reloadStyle(path):
+    """Reload a QSS stylesheet from disk, fixing relative image paths."""
     watch.removePaths(watch.files())
     watch.addPath(path)
     with open(path, "r") as f:
         stylesheet = f.read()
-        # Update the image paths to use full paths. Fixes image loading in styles
-        path = os.path.dirname(path).replace("\\", "/")
-        stylesheet = re.sub(r'url\((.*?)\)', r'url("{}/\1")'.format(path),
-                            stylesheet)
+        dirPath = os.path.dirname(path).replace("\\", "/")
+        stylesheet = re.sub(r"url\((.*?)\)", r'url("{}/\1")'.format(dirPath), stylesheet)
         app.setStyleSheet(stylesheet)
         app.processEvents()
 
 
-watch = QFileSystemWatcher()
-watch.fileChanged.connect(reload_style)
+def setExampleStyles(name, path):
+    """Register an example style in QgsSettings."""
+    s.setValue(f"myStyles/{name}/name", name)
+    s.setValue(f"myStyles/{name}/path", path)
 
 
-# Set Activated style
-def setActivated(Name):
-    s.setValue('myStyles/Activated', Name)
+def setActivated(name):
+    """Set the currently activated style name."""
+    s.setValue("myStyles/Activated", name)
 
 
-# GetStyle row
-def getStyle(Name):
-    try:
-        name = s.value('myStyles/%s/name' % Name)
-        path = s.value('myStyles/%s/path' % Name)
-    except Exception:
-        name = ""
-        path = ""
-    return (name, path)
+def getActivated():
+    """Get the currently activated style name, clearing if file missing."""
+    activated = s.value("myStyles/Activated", "")
+    if activated:
+        _, path = getStyle(activated)
+        if not path or not os.path.exists(path):
+            setActivated("")
+            return ""
+    return activated
 
 
-# Get myStyles list
+def setPreview(name):
+    """Set the currently previewed style name."""
+    s.setValue("myStyles/Preview", name)
+
+
+def getPreview():
+    """Get the currently previewed style name."""
+    return s.value("myStyles/Preview", "")
+
+
+def getStyle(name):
+    """Get name and path for a style by name."""
+    return (s.value(f"myStyles/{name}/name", ""), s.value(f"myStyles/{name}/path", ""))
+
+
 def getStyleList():
-    StyleList = []
+    """Get list of registered style names, removing those with missing files."""
+    validStyles = []
     try:
         s.beginGroup("myStyles")
-        StyleList = s.childGroups()
+        for name in s.childGroups():
+            s.beginGroup(name)
+            path = s.value("path", "")
+            s.endGroup()
+            if path and os.path.exists(path):
+                validStyles.append(name)
+            else:
+                s.remove(f"{name}/name")
+                s.remove(f"{name}/path")
+                s.remove(name)
+    except Exception:
+        return []
+    finally:
         s.endGroup()
-    except Exception:
-        None
-    return StyleList
+    return validStyles
 
 
-# Get Activated
-def getActivated():
-    try:
-        Activated = s.value('myStyles/Activated')
-    except Exception:
-        Activated = ""
-    return Activated
+def addNewStyle(name, path):
+    """Add or update a user style in QgsSettings."""
+    s.setValue(f"myStyles/{name}/name", name)
+    s.setValue(f"myStyles/{name}/path", path)
 
 
-# Set preview styles
-def setPreview(Name):
-    s.setValue('myStyles/Preview', Name)
-    return
+def delStyle(name):
+    """Delete a style from QgsSettings."""
+    s.remove(f"myStyles/{name}/name")
+    s.remove(f"myStyles/{name}/path")
 
 
-# Get preview styles
-def getPreview():
-    try:
-        Preview = s.value('myStyles/Preview')
-    except Exception:
-        Preview = ""
-    return Preview
+def activateStyle(name, iface, preview=False, close=False):
+    """Activate or preview a style, applying it to the application."""
+    styleName, path = getStyle(name)
 
-
-# Add Examples Styles
-def setExampleStyles(Name, path):
-    s.setValue('myStyles/%s/name' % Name, Name)
-    s.setValue('myStyles/%s/path' % Name, path)
-
-
-# Create or update
-def AddNewStyle(Name, path):
-    s.setValue('myStyles/%s/name' % Name, Name)
-    s.setValue('myStyles/%s/path' % Name, path)
-
-
-# Delete Style
-def delStyle(Name):
-    try:
-        s.remove('myStyles/%s/name' % Name)
-        s.remove('myStyles/%s/path' % Name)
-    except Exception:
-        None
-
-
-# Activate/Preview a specified style
-def activateStyle(Name, iface, preview=False, close=None):
-    name, path = getStyle(Name)
-    if name == "" or name is None:
+    if not styleName or not path:
+        watch.removePaths(watch.files())
         app.setStyleSheet("")
         return
 
     watch.removePaths(watch.files())
     iface.messageBar().clearWidgets()
 
-    if path == "" or path is None:
-        app.setStyleSheet("")
-        return
-
     if not os.path.exists(path):
-        iface.messageBar().pushMessage("Error: "+path+" : ",
-                                       "The path to the * .qss not exist.Load default style ",
-                                       level=QgsMessageBar.CRITICAL,
-                                       duration=2)
+        iface.messageBar().pushMessage(
+            f"Error: {path}",
+            "The path to the .qss does not exist. Load default style.",
+            level=QgsMessageBar.CRITICAL,
+            duration=2,
+        )
         app.setStyleSheet("")
         return
 
-    if close is not None:
+    if close:
         return
+
+    reloadStyle(path)
+
+    if preview:
+        setPreview(styleName)
+        iface.messageBar().pushMessage(
+            f"Style {styleName}: ",
+            "Style Preview loaded correctly.",
+            level=QgsMessageBar.INFO,
+            duration=2,
+        )
     else:
-        reload_style(path)
-        if preview is False:
-            setActivated(name)
-            iface.messageBar().pushMessage("Style "+name+" : ", "Style loaded correctly.",
-                                           level=QgsMessageBar.INFO, duration=2)
-            return
-        else:
-            setPreview(name)
-            iface.messageBar().pushMessage("Style "+name+" : ", "Style Preview loaded correctly.",
-                                           level=QgsMessageBar.INFO, duration=2)
-            return
+        setActivated(styleName)
+        iface.messageBar().pushMessage(
+            f"Style {styleName}: ", "Style loaded correctly.", level=QgsMessageBar.INFO, duration=2
+        )

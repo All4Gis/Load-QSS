@@ -1,0 +1,278 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>LoadQSSDialog</class>
+ <widget class="QDialog" name="LoadQSSDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>385</width>
+    <height>392</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Load QSS - UI themes</string>
+  </property>
+   <layout class="QVBoxLayout" name="verticalLayout_2">
+   <property name="topMargin">
+    <number>6</number>
+   </property>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout_2">
+     <item>
+      <widget class="QPushButton" name="btn_About">
+       <property name="minimumSize">
+        <size>
+         <width>0</width>
+         <height>0</height>
+        </size>
+       </property>
+       <property name="cursor">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="styleSheet">
+        <string notr="true">text-align:left;</string>
+       </property>
+       <property name="text">
+        <string>About</string>
+       </property>
+       <property name="flat">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <spacer name="horizontalSpacer">
+       <property name="orientation">
+        <enum>Qt::Horizontal</enum>
+       </property>
+       <property name="sizeHint" stdset="0">
+        <size>
+         <width>40</width>
+         <height>20</height>
+        </size>
+       </property>
+      </spacer>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <layout class="QHBoxLayout" name="horizontalLayout">
+     <item>
+      <widget class="QListWidget" name="listStyles">
+       <property name="cursor" stdset="0">
+        <cursorShape>PointingHandCursor</cursorShape>
+       </property>
+       <property name="alternatingRowColors">
+        <bool>true</bool>
+       </property>
+      </widget>
+     </item>
+     <item>
+      <layout class="QVBoxLayout" name="verticalLayout">
+       <item>
+        <widget class="QPushButton" name="addBtn">
+         <property name="enabled">
+          <bool>true</bool>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string>Add</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="deleteBtn">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string>Delete</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="activateBtn">
+         <property name="enabled">
+          <bool>false</bool>
+         </property>
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string>Activate</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <widget class="QPushButton" name="defaultBtn">
+         <property name="cursor">
+          <cursorShape>PointingHandCursor</cursorShape>
+         </property>
+         <property name="text">
+          <string>Default</string>
+         </property>
+        </widget>
+       </item>
+       <item>
+        <spacer name="verticalSpacer">
+         <property name="orientation">
+          <enum>Qt::Vertical</enum>
+         </property>
+         <property name="sizeHint" stdset="0">
+          <size>
+           <width>20</width>
+           <height>40</height>
+          </size>
+         </property>
+        </spacer>
+       </item>
+      </layout>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QLabel" name="label">
+     <property name="font">
+      <font>
+       <weight>50</weight>
+       <italic>true</italic>
+       <bold>false</bold>
+      </font>
+     </property>
+     <property name="cursor">
+      <cursorShape>ArrowCursor</cursorShape>
+     </property>
+     <property name="lineWidth">
+      <number>1</number>
+     </property>
+     <property name="text">
+      <string>We provide some styles as an example to show the personalizing capabilities of the interface. Some styles may have elements that can be improved. Therefore, we encourage you to improve them or to create your own designs.</string>
+     </property>
+     <property name="textFormat">
+      <enum>Qt::AutoText</enum>
+     </property>
+     <property name="scaledContents">
+      <bool>true</bool>
+     </property>
+     <property name="wordWrap">
+      <bool>true</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+  <resources/>
+ <connections>
+  <connection>
+   <sender>addBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>LoadQSSDialog</receiver>
+    <slot>addStyle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>336</x>
+     <y>51</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>299</x>
+     <y>147</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>deleteBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>LoadQSSDialog</receiver>
+    <slot>deleteStyle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>336</x>
+     <y>82</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>281</x>
+     <y>151</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>defaultBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>LoadQSSDialog</receiver>
+    <slot>resetStyle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>373</x>
+     <y>148</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>233</x>
+     <y>145</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>listStyles</sender>
+   <signal>itemClicked(QListWidgetItem*)</signal>
+   <receiver>LoadQSSDialog</receiver>
+    <slot>selectRow()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>74</x>
+     <y>86</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>2</x>
+     <y>12</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>activateBtn</sender>
+   <signal>clicked()</signal>
+   <receiver>LoadQSSDialog</receiver>
+    <slot>applyStyle()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>336</x>
+     <y>111</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>254</x>
+     <y>152</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>btn_About</sender>
+   <signal>clicked()</signal>
+   <receiver>LoadQSSDialog</receiver>
+    <slot>about()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>45</x>
+     <y>14</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>3</x>
+     <y>49</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
+ <slots>
+  <slot>AddStyle()</slot>
+  <slot>DeleteStyle()</slot>
+  <slot>ApplyStyle()</slot>
+  <slot>ResetStyle()</slot>
+  <slot>SelectRow()</slot>
+  <slot>PreviewStyle()</slot>
+  <slot>About()</slot>
+ </slots>
+</ui>

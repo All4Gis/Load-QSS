@@ -76,11 +76,11 @@ def stripPythonComments(directory):
                 if isinstance(
                     node, (ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef, ast.Module)
                 ):
-                    if (
-                        node.body
-                        and isinstance(node.body[0], ast.Expr)
-                        and isinstance(node.body[0].value, (ast.Constant, ast.Str))
-                    ):
+                    if (node.body and isinstance(
+                        node.body[0], ast.Expr
+                    ) and isinstance(
+                        node.body[0].value, (ast.Constant, ast.Str)
+                    )):
                         docstringLines.add(node.body[0].lineno)
 
             lines = content.splitlines(keepends=True)

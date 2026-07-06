@@ -1,12 +1,21 @@
 # -*- coding: utf-8 -*-
-import sys
-
-# try:
-#     sys.path.append("D:/eclipse/plugins/org.python.pydev_5.7.0.201704111357/pysrc")
-# except Exception:
-#     None
+import os
 
 
 def classFactory(iface):
-    from .LoadQSS import LoadQSS
-    return LoadQSS(iface)
+    """QGIS plugin entry point that creates and returns the LoadQSS instance."""
+    from .loadQSS import LoadQSS
+
+    plugin = LoadQSS(iface)
+
+    if os.environ.get("FRAN_DEBUG") == "1":
+        try:
+            import debugpy
+            debugpy.connect(("localhost", 5678))
+            print("[QGIS] Client connected!")
+        except ImportError:
+            print("[QGIS] debugpy not found in QGIS profile python/")
+        except Exception as e:
+            print(f"[QGIS] DEBUG INIT ERROR: {e}")
+
+    return plugin

@@ -3,22 +3,21 @@ name=Load QSS - UI themes
 qgisMinimumVersion=2.99
 qgisMaximumVersion=4.99
 supportsQt6=True
-description=Configure look and feel for Qgis
-about=<b>Load QSS allows the user to load his/her own *.qss files and change the look and feel of Qgis.</b>
-	<BR />
-	Some examples o predefined themes are provided.
-   
-	<div style="width:400px; height:200px;overflow:scroll; overflow-x: hidden; overflow-y: hidden;">
-		<img src="https://goo.gl/GgTCxc" width="300" height="200!important"/>
-	</div>
-	<a href="https://all4gis.github.io//">Author website</a>
-	
-version=1.4.3
+description=Configure look and feel for QGIS
+about=<b>Load QSS allows you to load *.qss files and change the look and feel of QGIS.</b><br/>Predefined themes included.<br/><br/><b>Features:</b> Apply any .qss stylesheet, live preview, add custom styles, auto-reload on edit, persists across sessions.<br/><a href="https://github.com/All4Gis/Load-QSS">GitHub Repository</a>
+version=1.5.0
 author=Francisco Raga
 email=franka1986@gmail.com
 
-changelog=    
+changelog=
 	** General **
+	1.5.0:
+		- Add new themes
+		- Auto-discover themes from examples/ folder
+		- Simplify AboutQSSDialog and code cleanup
+		- Fix About dialog image loading with absolute paths
+		- Add build, deploy, and dev install scripts
+		- Add GitHub Actions CI/CD
 	1.4.3:
 		- Qt6 Compatibility (Thanks Nimrod51)
 	1.4.2:
@@ -27,44 +26,39 @@ changelog=
 		- Fix add style action
 		- Minor changes
 	1.4.1:
-		- fix issue in Add Button.
+		- Fix issue in Add Button
 	1.4:
 		- QGIS3 Migration
 	1.3.9:
-		- Fixed error in Linux Machine.
-		- Fixed error load Wombat style in Linux Machine.
-		- Add style new style "BlueGlass" by Steven Kay.
-		- Minor Changes.
+		- Fixed error in Linux Machine
+		- Fixed error loading Wombat style in Linux
+		- Add style "BlueGlass" by Steven Kay
 	1.3.8:
-		- Fixed delete style error.
-		- Minor Changes.
+		- Fixed delete style error
 	1.3.7:
-		-Add 6 new examples.
-		-Preview style.   
+		- Add 6 new examples
+		- Preview style
 	1.3.6:
-		-fixed Linux error.
-		-Minor change.
+		- Fixed Linux error
 	1.3.5:
-		-fixed error list themes.
+		- Fixed error listing themes
 	1.3.4:
-		-adds auto style reloading if the stylesheet changes, handy for testing the style file while you build it.
-		-Tweaks the wombat theme.
-		-Update name to add - UI Themes for better searching in plugin installer.	
+		- Auto style reloading when .qss file changes
+		- Tweaks the wombat theme
+		- Rename to "Load QSS - UI Themes"
 	1.3.3:
-		- Fixes image loading in styles.
-		- Add new theme "wombat".
+		- Fixes image loading in styles
+		- Add new theme "wombat"
 	1.3.2:
-		- Add new examples.
-		- Minor changes.
+		- Add new examples
 	1.3.1:
-		- Add about info.
-		- Restore last style activated.
-	1.3 :
-	 	- Add new example.
-	    - Minor changes.
+		- Add about info
+		- Restore last style activated
+	1.3:
+		- Add new example
 	1.2.1:
-		- Start of plugin.
-	
+		- Start of plugin
+
 tags=themes,productivity,qss,look and feel,style,work flow, configuration
 
 homepage=https://github.com/All4Gis/Load-QSS

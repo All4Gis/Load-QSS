@@ -15,103 +15,94 @@
  *   This program is free software; you can redistribute it and/or modify  *
  *   it under the terms of the GNU General Public License as published by  *
  *   the Free Software Foundation; either version 2 of the License, or     *
- #   any later version.                                                    *
+ *   any later version.                                                    *
  *                                                                         *
  ***************************************************************************/
 """
-# Import the PyQt and QGIS libraries
+
 from qgis.core import QgsMessageLog, Qgis
-from .AboutQSSDialog import AboutQSSDialog
-from .LoadQSSDialog import LoadQSSDialog
-from .utils.utils import *
-from qgis.PyQt.QtCore import Qt
+from qgis.PyQt.QtGui import QIcon
+from qgis.PyQt.QtWidgets import QAction, QApplication
+from .aboutQSSDialog import AboutQSSDialog
+from .loadQSSDialog import LoadQSSDialog
+from .utils.utils import getActivated, activateStyle, setExampleStyles, setActivated
 import os
 
-from qgis.PyQt.QtCore import *
-from qgis.PyQt.QtGui import *
-from qgis.PyQt.QtWidgets import *
+PLUGIN_DIR = os.path.dirname(os.path.abspath(__file__))
 
-# try:
-#     from pydevd import *
-# except ImportError:
-#     None
+
+def _discoverStyles(examplesDir):
+    """Scan examples/ and return {folder_name: qss_path} for each theme."""
+    styles = {}
+    if not os.path.isdir(examplesDir):
+        return styles
+    for folder in sorted(os.listdir(examplesDir)):
+        folderPath = os.path.join(examplesDir, folder)
+        if not os.path.isdir(folderPath):
+            continue
+        for f in os.listdir(folderPath):
+            if f.endswith(".qss"):
+                styles[folder] = os.path.join(folderPath, f)
+                break
+    return styles
+
+
+PLUGIN_MENU = "&Load QSS - UI themes"
 
 
 class LoadQSS:
     def __init__(self, iface):
+        """Initialize the plugin with QGIS interface reference."""
         self.iface = iface
-        self.plugin_dir = os.path.dirname(os.path.abspath(__file__))
 
-        # Examples
-        ExampleStyles = {
-            "Dark": "darkstyle.qss",
-            "machinery": "machinery.qss",
-            "DarkOrange": "DarkOrange.qss",
-            "light": "light.qss",
-            "Minimalist": "Minimalist.qss",
-            "Wombat": "stylesheet.qss",
-            "Dark Blue (FreeCAD)": "stylesheet.qss",
-            "Dark Green (FreeCAD)": "stylesheet.qss",
-            "Dark Orange (FreeCAD)": "stylesheet.qss",
-            "Light Blue (FreeCAD)": "stylesheet.qss",
-            "Light Green (FreeCAD)": "stylesheet.qss",
-            "Light Orange (FreeCAD)": "stylesheet.qss",
-            "BlueGlass": "blueglass.qss",
-            "Coffee": "coffee.qss"
-        }
-
-        for k, v in ExampleStyles.items():
-            setExampleStyles(k, self.to_exmples_folder(k, v))
-
-    # Copy style to examples plugin folder
-    def to_exmples_folder(self, folder, stylesheet):
-        return os.path.join(self.plugin_dir, "examples", folder, stylesheet)
+        examplesDir = os.path.join(PLUGIN_DIR, "examples")
+        for name, path in _discoverStyles(examplesDir).items():
+            setExampleStyles(name, path)
 
     def initGui(self):
-        # Use absolute paths for Qt6 compatibility
-        icon_path = os.path.join(self.plugin_dir, "images", "icon.png")
-        info_icon_path = os.path.join(self.plugin_dir, "images", "info.png")
-        
-        self.action = QAction(QIcon(icon_path),
-                              u"Load QSS - UI themes", self.iface.mainWindow())
-        self.action.setObjectName('mLoadQSS')
+        """Create toolbar icons and menu entries for the plugin."""
+        iconPath = os.path.join(PLUGIN_DIR, "images", "icon.png")
+        infoIconPath = os.path.join(PLUGIN_DIR, "images", "info.png")
+
+        self.action = QAction(QIcon(iconPath), "Load QSS - UI themes", self.iface.mainWindow())
+        self.action.setObjectName("mLoadQSS")
         self.action.triggered.connect(self.run)
         self.iface.addToolBarIcon(self.action)
-        self.iface.addPluginToMenu(u"&Load QSS - UI themes", self.action)
+        self.iface.addPluginToMenu(PLUGIN_MENU, self.action)
 
-        self.actionAbout = QAction(QIcon(info_icon_path),
-                                   u"About", self.iface.mainWindow())
-        self.iface.addPluginToMenu(u"&Load QSS - UI themes", self.actionAbout)
-        self.actionAbout.triggered.connect(self.About)
-        
-        # Wait for QGIS to finish booting before applying the theme
-        self.iface.initializationCompleted.connect(self.startup_style_check)
+        self.actionAbout = QAction(QIcon(infoIconPath), "About", self.iface.mainWindow())
+        self.actionAbout.triggered.connect(self.showAbout)
+        self.iface.addPluginToMenu(PLUGIN_MENU, self.actionAbout)
 
-    def startup_style_check(self):
+        self.iface.initializationCompleted.connect(self.startupStyleCheck)
+
+    def startupStyleCheck(self):
+        """Apply the previously activated style when QGIS starts."""
         try:
-            saved_style = getActivated()
-            if saved_style:
-                activateStyle(saved_style, self.iface)
+            savedStyle = getActivated()
+            if savedStyle:
+                activateStyle(savedStyle, self.iface)
         except Exception as e:
-            # Backward compatibility for QGIS 3 (PyQt5) and QGIS 4 (PyQt6) enums
-            if hasattr(Qgis, "MessageLevel"):
-                warning_level = Qgis.MessageLevel.Warning
-            else:
-                warning_level = Qgis.Warning
-                
-            QgsMessageLog.logMessage(f"LoadQSS Startup Error: {e}", "LoadQSS", warning_level)
+            level = Qgis.MessageLevel.Warning if hasattr(Qgis, "MessageLevel") else Qgis.Warning
+            QgsMessageLog.logMessage(f"LoadQSS Startup Error: {e}", "LoadQSS", level)
 
     def unload(self):
-        self.iface.removePluginMenu(u"&Load QSS - UI themes", self.action)
-        self.iface.removePluginMenu(u"&Load QSS - UI themes", self.actionAbout)
+        """Remove plugin menu items, toolbar icons, and reset to default style."""
+        self.iface.removePluginMenu(PLUGIN_MENU, self.action)
+        self.iface.removePluginMenu(PLUGIN_MENU, self.actionAbout)
         self.iface.removeToolBarIcon(self.action)
+        # Reset to default style
+        app = QApplication.instance()
+        if app:
+            app.setStyleSheet("")
+        setActivated("")
 
-    def About(self):
-        self.About = AboutQSSDialog(self.iface)
-        self.About.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowCloseButtonHint)
-        self.About.exec()
+    def showAbout(self):
+        """Open the About dialog window."""
+        dlg = AboutQSSDialog()
+        dlg.exec()
 
     def run(self):
-        self.dlg = LoadQSSDialog(self.iface)
-        self.dlg.setWindowFlags(Qt.WindowType.Window | Qt.WindowType.WindowCloseButtonHint)
-        self.dlg.exec()
+        """Open the main LoadQSS dialog for theme selection."""
+        dlg = LoadQSSDialog(self.iface)
+        dlg.exec()

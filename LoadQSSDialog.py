@@ -25,7 +25,7 @@ from qgis.PyQt.QtCore import Qt
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QDialog, QApplication, QFileDialog, QInputDialog, QMessageBox
 from qgis.gui import QgsMessageBar
-from .aboutQSSDialog import AboutQSSDialog
+from .AboutQSSDialog import AboutQSSDialog
 from .utils.utils import (
     getStyleList,
     getPreview,

@@ -49,7 +49,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-artifact@v4
         with:
-          name: load-qss-${{ steps.info.outputs.version }}
+          name: loadqss-${{ steps.info.outputs.version }}
           path: ${{ steps.info.outputs.ZIP_FILE }}
 
       - name: Create Release

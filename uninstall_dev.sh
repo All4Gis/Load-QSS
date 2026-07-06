@@ -5,6 +5,10 @@ set -e
 PLUGIN_NAME="Load-QSS"
 PLUGIN_DIR="$HOME/Library/Application Support/QGIS/QGIS4/profiles/default/python/plugins/$PLUGIN_NAME"
 
+echo "======================================"
+echo " $PLUGIN_NAME DEV UNINSTALL"
+echo "======================================"
+
 if [ ! -e "$PLUGIN_DIR" ] && [ ! -L "$PLUGIN_DIR" ]; then
     echo "Plugin not installed. Nothing to remove."
     exit 0
@@ -18,4 +22,5 @@ elif [ -d "$PLUGIN_DIR" ]; then
     echo "Plugin directory removed."
 fi
 
-echo "Plugin uninstalled successfully."
+echo ""
+echo "$PLUGIN_NAME uninstalled successfully."

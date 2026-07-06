@@ -46,15 +46,7 @@ examples/
 ./install_dev.sh
 ```
 
-Creates a symlink in the QGIS plugins directory. Changes to the source are immediately visible — just reload the plugin.
-
-### Full Dev Setup
-
-```bash
-./setup_qgis_dev.sh
-```
-
-Detects QGIS 4 Python binary and creates the symlink. Use [Plugin Reloader](https://github.com/borysiasty/plugin_reloader) for live reload.
+Creates a symlink in the QGIS plugins directory. Use [Plugin Reloader](https://github.com/borysiasty/plugin_reloader) for live reload.
 
 ### Build Release
 

@@ -27,6 +27,7 @@ echo "======================================"
 echo " $PLUGIN_NAME DEV INSTALL"
 echo "======================================"
 
+# Create plugin directory if needed
 mkdir -p "$PLUGIN_DIR"
 
 # Remove previous installation if it exists
@@ -37,7 +38,7 @@ elif [ -d "$PLUGIN_DIR/$PLUGIN_NAME" ]; then
     rm -rf "$PLUGIN_DIR/$PLUGIN_NAME"
 fi
 
-# Create symlink
+# Create symlink to source
 ln -s "$PLUGIN_SOURCE" "$PLUGIN_DIR/$PLUGIN_NAME"
 
 echo ""

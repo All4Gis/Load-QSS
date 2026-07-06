@@ -4,7 +4,7 @@ import os
 
 def classFactory(iface):
     """QGIS plugin entry point that creates and returns the LoadQSS instance."""
-    from .LoadQSS import LoadQSS
+    from .loadQSS import LoadQSS
 
     plugin = LoadQSS(iface)
 

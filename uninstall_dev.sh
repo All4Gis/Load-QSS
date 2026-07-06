@@ -2,7 +2,7 @@
 
 set -e
 
-PLUGIN_NAME="Load-QSS"
+PLUGIN_NAME="LoadQSS"
 PLUGIN_DIR="$HOME/Library/Application Support/QGIS/QGIS4/profiles/default/python/plugins/$PLUGIN_NAME"
 
 echo "======================================"

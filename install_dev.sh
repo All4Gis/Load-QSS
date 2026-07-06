@@ -2,7 +2,7 @@
 
 set -e
 
-PLUGIN_NAME="Load-QSS"
+PLUGIN_NAME="LoadQSS"
 
 REPO_ROOT="$(cd "$(dirname "$0")" && pwd)"
 PLUGIN_SOURCE="$REPO_ROOT"

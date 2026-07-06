@@ -23,8 +23,8 @@
 from qgis.core import QgsMessageLog, Qgis
 from qgis.PyQt.QtGui import QIcon
 from qgis.PyQt.QtWidgets import QAction, QApplication
-from .aboutQSSDialog import AboutQSSDialog
-from .loadQSSDialog import LoadQSSDialog
+from .AboutQSSDialog import AboutQSSDialog
+from .LoadQSSDialog import LoadQSSDialog
 from .utils.utils import getActivated, activateStyle, setExampleStyles, setActivated
 import os
 

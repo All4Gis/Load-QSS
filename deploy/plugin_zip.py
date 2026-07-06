@@ -30,6 +30,7 @@ EXCLUDE_PATTERNS = [
     "*.bak",
     "*.yml",
     "*.ps1",
+    ".DS_Store",
     ".gitignore",
     ".gitattributes",
     "build.py",
@@ -178,6 +179,8 @@ def createZipWithFolder(sourceDir, zipPath, folderName):
     with zipfile.ZipFile(zipPath, 'w', zipfile.ZIP_DEFLATED) as zipf:
         for root, dirs, files in os.walk(sourceDir):
             for file in files:
+                if file == ".DS_Store":
+                    continue
                 filePath = Path(root) / file
                 arcname = os.path.join(folderName, os.path.relpath(filePath, sourceDir))
                 zipf.write(filePath, arcname)

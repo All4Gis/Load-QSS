@@ -34,7 +34,6 @@ EXCLUDE_PATTERNS = [
     ".gitignore",
     ".gitattributes",
     "build.py",
-    "LICENSE",
     "README.md",
 ]
 

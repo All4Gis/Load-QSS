@@ -91,11 +91,6 @@ class LoadQSS:
         self.iface.removePluginMenu(PLUGIN_MENU, self.action)
         self.iface.removePluginMenu(PLUGIN_MENU, self.actionAbout)
         self.iface.removeToolBarIcon(self.action)
-        # Reset to default style
-        app = QApplication.instance()
-        if app:
-            app.setStyleSheet("")
-        setActivated("")
 
     def showAbout(self):
         """Open the About dialog window."""
